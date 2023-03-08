@@ -1,0 +1,44 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        
+        <% results.forEach(function(result) { %>
+
+        <!-- Adicione aqui outros campos que você deseja exibir -->
+        <a class="btn btn-secondary mt-3" href="/painel/<%=idempresa%>">Voltar</a>
+        <% }) %>
+        <hr />
+        <h1>Relatório <%=nTes%></h1>
+        <hr />
+      </div>
+      <div class="card-body">
+        <p class="text-black">Teste:-<%=nTes%></p>
+        <% if (results[0].status === "finished") { %> <% if
+        (results[0].totalPassed === 1) { %>
+        <p class="text-white bg-success p-2 rounded">Passou!</p>
+        <a type="text" class="btn btn-primary" href="/videos/<%=nomevideo%>"
+          >Ver vídeo</a
+        >
+        <a
+        class="btn btn-secondary"
+        href="/editarteste/<%=nTes%>/<%=idempresa%>"
+        >editar</a
+      >
+        <% } else if (results[0].totalPassed === 0) { %>
+        <p class="text-white bg-danger p-2 rounded">Falhou.</p>
+        <a type="text" class="btn btn-primary" href="/videos/<%=nomevideo%>"
+          >Ver vídeo</a
+        > <a
+        class="btn btn-secondary"
+        href="/editarteste/<%=nTes%>/<%=idempresa%>"
+        >editar</a
+      >
+        <% } %> <% } %>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include ('partials/footer.ejs') %>

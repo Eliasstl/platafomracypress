@@ -1,0 +1,82 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <hr />
+        <h1>Selecione os testes de software que deseja realizar</h1>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Aviso</h4>
+            <p>Seus testes já estão em execução. Aguarde pelo relatório antes de rodar mais testes, tudo bem?.</p>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Fechar"
+            ></button>
+          </div>
+        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+          >voltar</a
+        >
+        <hr />
+      </div>
+
+      <!-- Adicione esta tag de fechamento -->
+      <div class="card-body">
+        <form
+          id="form-rodartestese"
+          method="POST"
+          action="/rodartestesselecionados/<%=idempresa%>"
+        >
+          <button
+            class="btn btn-primary"
+            type="submit"
+            id="btn-rodartestesselecionados"
+            disabled
+          >
+            rodar testes selecionados
+          </button>
+
+          <% testes.forEach(teste =>{%> <% if( teste.idempresa == idempresa &&
+          teste.status == 0 ){%>
+
+          <div class="card-body">
+            <div class="col-1">
+              <input
+                type="checkbox"
+                name="selecionado[]"
+                value="<%=teste.nometeste%>"
+              />
+            </div>
+            <div class="row mt-6">
+              <div class="col">
+                <p><%=teste.nometeste%></p>
+              </div>
+            </div>
+          </div>
+          <%}%> <%})%>
+
+          <input type="hidden" name="idempresa" value="<%=idempresa%>" />
+          <input type="hidden" name="nometeste" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+
+  <!-- Adicione o código JavaScript para habilitar o botão quando o checkbox for marcado -->
+  <script>
+    const checkboxes = document.getElementsByName("selecionado[]");
+    const button = document.getElementById("btn-rodartestesselecionados");
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        const checked = Array.from(checkboxes).some((c) => c.checked);
+        button.disabled = !checked;
+      });
+    });
+  </script>
+</body>

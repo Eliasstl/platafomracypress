@@ -1,0 +1,78 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <hr />
+  <div class="container">
+    <form method="POST" action="/salvarpasso/">
+      <div class="form-group">
+        <label for="stepName">Nome do Passo de Teste:</label>
+        <input type="text" class="form-control" name="titulo" />
+        <input type="hidden" value="<%=idempresa%>" name="idempresa" />
+        <input type="hidden" value="<%=nometeste%>" name="nometeste" />
+      </div>
+      <div class="form-group">
+        <label for="locatorType">Tipo de Localizador:</label>
+        <select class="form-control" name="tipo">
+          <option value="  "></option>
+          <option>xpath</option>
+          <option>css selector</option>
+          <option>aguardar</option>
+          <option>navegar para url</option>
+          <option>capturar imagem</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="locatorValue">Valor de Localizador:</label>
+        <input type="text" class="form-control" name="conteudo" />
+      </div>
+      <div class="form-group">
+        <label for="locatorValue">Inserir valor:</label>
+        <input type="text" class="form-control" name="inserir" />
+      </div>
+
+      <div class="form-group">
+        <label for="actionType">Forçar ação</label>
+        <select class="form-control" name="forca">
+          <option value="  "></option>
+          <option>Sim</option>
+          <option>Não</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="actionType">Esperar segundos:</label>
+        <select class="form-control" name="esperar">
+          <option value="  "></option>
+          <option>0</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="actionType">Tipo de Ação:</label>
+        <select class="form-control" name="funcao">
+          <option value=" "></option>
+          <option>clique</option>
+          <option>inserir</option>
+          <option>comparar</option>
+          <option>aguardar</option>
+          <option>visivel</option>
+          <option>existe</option>
+          <option>value</option>
+          <option>contem palavra</option>
+          <option>contem frase</option>
+          <option>navegar</option>
+          <option>capturar imagem</option>
+
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">salvar passo</button>
+      <a
+        type="reset"
+        class="btn btn-secondary"
+        href="/criarteste/<%=nometeste%>/<%=idempresa%>"
+        >cancelar</a
+      >
+    </form>
+  </div>
+</body>
+<%- include ('partials/footer.ejs') %>

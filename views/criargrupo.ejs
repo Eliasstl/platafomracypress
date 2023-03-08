@@ -1,0 +1,184 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <hr />
+        <h2>Criar grupo de passos</h2>
+       
+        <form id="group-form" action="/salvargrupodepasso/<%=nometeste%>/<%=idempresa%>" method="POST">
+          <div class="form-group">
+            <label for="nomegrupo">Nome do Grupo:</label>
+            <input type="text" class="form-control" id="nomegrupo" name="nomegrupo" required>
+          </div>
+          <button type="submit" class="btn btn-primary">salvar grupo</button>
+        </form>
+        <hr>
+        
+        <a type="reset" class="btn btn-secondary" href="/criarteste/<%=nometeste%>/<%=idempresa%>"
+          >voltar</a>
+        
+        
+        <a
+          class="btn btn-primary"
+          href="/adicionarpassogrupo/<%=nometeste%>/<%=idempresa%>"
+          >criar passo</a
+        >
+        
+         <a type="reset" class="btn btn-secondary" href="/meusdadosgrupo/<%=nometeste%>/<%=idempresa%>"
+          >meus passos</a
+        >
+      
+      
+      </div>
+      <div class="card h-auto">
+        <div class="card-body" >
+          <% testes.forEach(teste => {%> <% if (teste.idempresa == idempresa &&
+          teste.nometeste == nometeste && teste.status == 0) { %>
+          <form id="form-deletarpasso" method="POST" action="/deletarpassogrupo"style="border: 1px solid #ddd;  padding: 10px;">
+            <input type="hidden" name="idpasso" value="<%= teste.id %>" />
+            <input
+              type="hidden"
+              name="nometeste"
+              value="<%= teste.nometeste %>"
+            />
+            <input
+              type="hidden"
+              name="idempresa"
+              value="<%= teste.idempresa %>"
+            />
+            <div class="row mt-3">
+              <div class="col">
+                <h5 class="text-sm"><%= teste.titulo %></h5>
+              </div>
+              <div class="col">
+                <p class="text-sm"><%= teste.funcao %></p>
+              </div>
+              <div class="col">
+                <div class="btn-group-vertical mt-3 mb-0" role="group">
+                  <a href="/movergruposub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    class="btn btn-outline-secondary btn-sm btn-green"
+                    id="btn-moverpassocima">
+                    <i class="bi bi-caret-up"></i>
+                  </a>
+                  <a href="/movergrupodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    class="btn btn-outline-secondary btn-sm"
+                    id="btn-moverpassobaixo">
+                    <i class="bi bi-caret-down"></i>
+                  </a>
+                </div>
+                
+                <div class="btn-group" role="group">
+                  <a 
+                    class="btn btn-secondary btn-sm"
+                    href="/editargrupo/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>"
+                  >
+                    editar passo
+                  </a>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    id="btn-deletarpasso"
+                    type="submit"
+                  >
+                    deletar passo
+                  </button>
+                </div>
+              </div>
+            </div>
+          
+          </form>
+         
+          <% } %> <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+
+  <!-- Modal de confirmação -->
+  <div
+    class="modal fade"
+    id="confirmacao-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmacao-modal-titulo"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmacao-modal-titulo">
+            Confirmar envio
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Fechar"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">Tem certeza que deseja deletar esse passo?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Não
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btn-confirmar-envio"
+          >
+            Sim
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Obter o formulário e o campo de entrada do nome do grupo
+    const form = document.getElementById('group-form');
+    const groupNameInput = document.getElementById('nomegrupo');
+  
+    // Adicionar um ouvinte de evento para o envio do formulário
+    form.addEventListener('submit', (event) => {
+      // Verificar se o nome do grupo está preenchido
+      if (!groupNameInput.value) {
+        alert('Por favor, preencha o nome do grupo.');
+        event.preventDefault();
+        return;
+      }
+  
+      // Mostrar o modal de confirmação
+      if (!confirm(`Deseja salvar o grupo ja adicionou todos os passos? "${groupNameInput.value}"?`)) {
+        event.preventDefault();
+        return;
+      }
+    });
+  </script>
+  
+  <script>
+    // Adiciona um event listener ao botão de envio do formulário
+    document
+      .getElementById("btn-deletarpasso")
+      .addEventListener("click", function (event) {
+        event.preventDefault(); // impede o envio do formulário
+
+        // Exibe o modal de confirmação
+        $("#confirmacao-modal").modal("show");
+      });
+
+    // Adiciona um event listener ao botão "Sim" do modal de confirmação
+    document
+      .getElementById("btn-confirmar-envio")
+      .addEventListener("click", function () {
+        // Fecha o modal
+        $("#confirmacao-modal").modal("hide");
+
+        // Envia o formulário
+        document.getElementById("form-deletarpasso").submit();
+      });
+  </script>
+</body>

@@ -1,0 +1,96 @@
+<%- include ('partials/header.ejs') %>
+
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <hr />
+        <h2>Controle de teste</h2>
+        <hr />
+        <a
+          type="text"
+          class="btn btn-primary"
+          href="/gravarnometeste/<%=idempresa%>"
+          >novo caso de teste</a
+        >
+        <a href="/rodartestes/<%=idempresa%>" type="text" class="btn btn-secondary">executar testes</a>
+        <a href="/selecionartesteagenda/<%=idempresa%>" type="text" class="btn btn-primary">agendar testes</a>
+        
+        <a href="/relatoriogeral/<%=idempresa%>" type="text" class="btn btn-secondary">relatórios</a>
+      </div>
+      <% testes.forEach(teste =>{%> <% if( teste.idempresa == idempresa &&
+      teste.status == 0 ){%>
+      <form id="form-deletarpasso" method="POST" action="/deletarteste">
+        <input type="hidden" name="nometeste" value="<%=teste.nometeste%>" />
+        <input type="hidden" name="idempresa" value="<%=teste.idempresa%>" />
+        <div class="card-body">
+          <div class="row mt-6">
+            <div class="col">
+              <p class="teste-nome"><%=teste.nometeste%> <i class="fas fa-edit edit-icon"></i></p>
+            </div>
+
+            <div class="col">
+              <a
+                class="btn btn-secondary"
+                href="/editarteste/<%=teste.nometeste%>/<%=idempresa%>"
+                >editar</a
+              >
+              <button
+                class="btn btn-danger"
+                type="submit"
+                data-="btn-deletarteste"
+              >
+                deletar
+              </button>
+              <a
+                class="btn btn-warning"
+                id="rodateste"
+                href="/run-tests/<%=idempresa%>/<%=teste.nometeste%>"
+                >executar</a
+              >
+            </div>
+          </div>
+        
+        </div>
+      </form>
+      <%}%> <%})%>
+    </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+
+  <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+  <style>
+    .edit-icon {
+      display:none;
+    }
+    .teste-nome:hover .edit-icon {
+      display:inline-block;
+    }
+  </style>
+
+  <script>
+    document
+      .querySelector("[data-btn-deletarteste]")
+      .addEventListener("click", function (event) {
+        event.preventDefault(); // impede o envio do formulário
+
+        // Exibe o modal de confirmação
+        $("#confirmacao-modal").modal("show");
+      });
+
+    // Adiciona um event listener ao botão "Sim" do modal de confirmação
+    document
+      .getElementById("btn-confirmar-envio")
+      .addEventListener("click", function () {
+        // Fecha o modal
+        $("#confirmacao-modal").modal("hide");
+
+        // Envia o formulário
+        document.getElementById("form-deletarpasso").submit();
+      });
+  </script>
+</body>

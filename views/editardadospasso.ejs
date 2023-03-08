@@ -1,0 +1,142 @@
+<%- include ('partials/header.ejs') %>
+<%- include ('partials/navbar.ejs') %>
+
+<br />
+<hr />
+<div class="container">
+  <form id="form-salvar" method="POST" action="/atualizarpassodados/">
+    <% if (testes && testes.length) { %>
+      <% testes.forEach(function(teste) { %>
+        <input type="hidden" name="idpasso" value="<%=teste.id%>" />
+        <input type="hidden" name="nometeste" value="<%=nometeste%>" />
+        <div class="form-group">
+          <label for="stepName">Nome do Passo de Teste:</label>
+          <input type="text" value="<%=teste.titulo%>" class="form-control" name="titulo" />
+          <input type="hidden" value="<%=teste.idempresa%>" name="idempresa" />
+          <input type="hidden" value="<%=teste.titulo%>" name="passotitulo" />
+          <div class="form-group">
+            <label for="locatorType">Tipo de Localizador:</label>
+            <select class="form-control" name="tipo">
+              <option><%=teste.tipo%></option>
+              <option value="  "></option>
+              <option>xpath</option>
+              <option>css selector</option>
+              <option>aguardar</option>
+              <option>navegar para url</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="locatorValue">Valor de Localizador:</label>
+            <input type="text" value="<%=teste.conteudo%>" class="form-control" name="conteudo" />
+          </div>
+          <div class="form-group">
+            <label for="locatorValue">Inserir:</label>
+            <input type="text" class="form-control" value="<%=teste.inserir%>" name="inserir" />
+          </div>
+          <div class="form-group">
+            <label for="actionType">Forçar ação</label>
+            <select class="form-control" name="forca">
+              <option><%=teste.forca%></option>
+              <option value="  "></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="actionType">Esperar segundos:</label>
+            <select class="form-control" name="esperar">
+              <option><%=teste.esperar%></option>
+              <option value="  "></option>
+              <option>0</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="actionType">Tipo de Ação:</label>
+            <select class="form-control" name="funcao">
+              <option><%=teste.funcao%></option>
+              <option>clique</option>
+              <option>inserir</option>
+              <option>comparar</option>
+              <option>aguardar</option>
+              <option>visivel</option>
+              <option>existe</option>
+              <option>value</option>
+              <option>contem palavra</option>
+              <option>contem frase</option>
+              <option>navegar</option>
+            </select>
+          </div>
+          <button id="btn-salvar" type="submit" class="btn btn-primary">Salvar passo</button>
+          <a type="reset" class="btn btn-secondary"   href="/meusdados/<%=nometeste%>/<%=teste.idempresa%>">Cancelar</a>
+        </div>
+      <% }); %>
+    <% }%>
+
+  </form>
+</div>
+  <!-- Modal de confirmação -->
+  <div
+    class="modal fade"
+    id="confirmacao-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmacao-modal-titulo"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmacao-modal-titulo">
+            Confirmar envio
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Fechar"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">Esse passo sera alterado em todos os testes</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Não
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btn-confirmar-envio"
+          >
+            Sim
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Adiciona um event listener ao botão de envio do formulário
+    document
+      .getElementById("btn-salvar")
+      .addEventListener("click", function (event) {
+        event.preventDefault(); // impede o envio do formulário
+
+        // Exibe o modal de confirmação
+        $("#confirmacao-modal").modal("show");
+      });
+
+    // Adiciona um event listener ao botão "Sim" do modal de confirmação
+    document
+      .getElementById("btn-confirmar-envio")
+      .addEventListener("click", function () {
+        // Fecha o modal
+        $("#confirmacao-modal").modal("hide");
+
+        // Envia o formulário
+        document.getElementById("form-salvar").submit();
+      });
+  </script>
+
+
+<%- include ('partials/footer.ejs') %>

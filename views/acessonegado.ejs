@@ -1,0 +1,40 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  
+  <br />
+  <hr />
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <h4 class="alert-heading">Aviso</h4>
+          <p>Senha ou email invalido.</p>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Fechar"
+          ></button>
+        </div>
+        <h1>Acessar</h1>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/validaracesso">
+          <div class="form-group">
+            <label for="locatorType">Email:</label>
+            <input type="text" class="form-control" name="email" />
+          </div>
+          <div class="form-group">
+            <label for="locatorType">Senha:</label>
+            <input type="password" class="form-control" name="senha" />
+          </div>
+          <button type="submit" class="btn btn-primary">Entrar</button>
+          <a type="reset" class="btn btn-secondary" href="/cadastrarcliente"
+            >Cadastrar</a
+          >
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include ('partials/footer.ejs') %>

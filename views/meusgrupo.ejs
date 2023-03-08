@@ -1,0 +1,68 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <hr />
+  <div class="container" style="max-height: 500px">
+    <h1>Meus grupos de passo</h1>
+   
+    <a
+      type="reset"
+      class="btn btn-secondary"
+      href="/criarteste/<%= nometeste %>/<%= idempresa %>"
+      >voltar</a
+    >
+    <hr>
+    <form action="/adicionargrupopasso" method="POST">
+    
+
+    <div class="row row-cols-1 row-cols-sm-2" id="dados-lista">
+      <% if(grupos.length > 0) { %>
+        <% grupos.forEach((grupo) => { %>
+          <div class="col mb-3">
+            <div class="card card-sm">
+              <div class="card-body">
+                <button
+                  class="btn btn-light btn-block text-left"
+                  name="passo"
+                  value=""
+                >
+                  <h2 class="card-title mb-0"><%= grupo.titulo %></h2>
+                  
+                </button>
+                <div class="mt-2">
+                  <a
+                    class="btn btn-primary btn-sm mr-2"
+                    name="gru"
+                    href="/selecionargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>"
+                    value="<%=grupo.id%>"
+                    >selecionar</a
+                  >
+
+                  <a
+                    class="btn btn-danger btn-sm"
+                    name="delete"
+                    href="/deletargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>"
+                  >
+                    deletar
+                  </a>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %> 
+      <% } else { %>
+        <p>Nenhum passo encontrado</p>
+      <% } %>
+    </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+
+  <script>
+    // Adiciona barra de rolagem usando JavaScript
+    const dadosLista = document.getElementById("dados-lista");
+    dadosLista.style.overflowY = "scroll";
+  </script>
+</body>

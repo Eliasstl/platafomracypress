@@ -1,0 +1,166 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <div class="alert alert-info" role="alert">
+          <strong>Passo já cadastrado!</strong> Parece que você já adicionou
+          este Passo à sua lista. Verifique sua lista de Passos para confirmar.
+        </div>
+        <hr />
+        <h2><%=nometeste%></h2>
+        <hr />
+        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+          >voltar</a
+        >
+
+        <a
+          class="btn btn-primary"
+          href="/adicionarpasso/<%=nometeste%>/<%=idempresa%>"
+          >adicionar passo</a
+        >
+
+        <a
+          type="reset"
+          class="btn btn-secondary"
+          href="/meusdados/<%=nometeste%>/<%=idempresa%>"
+          >meus passos</a
+        >
+      </div>
+      <div class="card h-auto">
+        <div class="card-body">
+          <% testes.forEach(teste => {%> <% if (teste.idempresa == idempresa &&
+          teste.nometeste == nometeste && teste.status == 0) { %>
+          <form
+            id="form-deletarpasso"
+            method="POST"
+            action="/deletarpasso"
+            style="border: 1px solid #ddd; padding: 10px"
+          >
+            <input type="hidden" name="idpasso" value="<%= teste.id %>" />
+            <input
+              type="hidden"
+              name="nometeste"
+              value="<%= teste.nometeste %>"
+            />
+            <input
+              type="hidden"
+              name="idempresa"
+              value="<%= teste.idempresa %>"
+            />
+            <div class="row mt-3">
+              <div class="col">
+                <h5 class="text-sm"><%= teste.titulo %></h5>
+              </div>
+              <div class="col">
+                <p class="text-sm"><%= teste.funcao %></p>
+              </div>
+              <div class="col">
+                <div class="btn-group-vertical mt-3 mb-0" role="group">
+                  <a
+                    href="/moverpassosub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    class="btn btn-outline-secondary btn-sm btn-green"
+                    id="btn-moverpassocima"
+                  >
+                    <i class="bi bi-caret-up"></i>
+                  </a>
+                  <a
+                    href="/moverpassodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    class="btn btn-outline-secondary btn-sm"
+                    id="btn-moverpassobaixo"
+                  >
+                    <i class="bi bi-caret-down"></i>
+                  </a>
+                </div>
+
+                <div class="btn-group" role="group">
+                  <a
+                    class="btn btn-secondary btn-sm"
+                    href="/aditarp/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>"
+                  >
+                    editar passo
+                  </a>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    id="btn-deletarpasso"
+                    type="submit"
+                  >
+                    deletar passo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <% } %> <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+
+  <!-- Modal de confirmação -->
+  <div
+    class="modal fade"
+    id="confirmacao-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmacao-modal-titulo"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmacao-modal-titulo">
+            Confirmar envio
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Fechar"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">Tem certeza que deseja deletar esse passo?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Não
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btn-confirmar-envio"
+          >
+            Sim
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Adiciona um event listener ao botão de envio do formulário
+    document
+      .getElementById("btn-deletarpasso")
+      .addEventListener("click", function (event) {
+        event.preventDefault(); // impede o envio do formulário
+
+        // Exibe o modal de confirmação
+        $("#confirmacao-modal").modal("show");
+      });
+
+    // Adiciona um event listener ao botão "Sim" do modal de confirmação
+    document
+      .getElementById("btn-confirmar-envio")
+      .addEventListener("click", function () {
+        // Fecha o modal
+        $("#confirmacao-modal").modal("hide");
+
+        // Envia o formulário
+        document.getElementById("form-deletarpasso").submit();
+      });
+  </script>
+</body>

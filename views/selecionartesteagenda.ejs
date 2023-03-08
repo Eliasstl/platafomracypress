@@ -1,0 +1,60 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <hr />
+        <h1>Selecione os testes que deseja agendar</h1>
+        <hr>
+        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>">voltar</a>
+        <a type="reset" class="btn btn-primary" href="/painel/<%=idempresa%>">agenda</a>
+        <hr />
+      </div>
+      <div class="card-body">
+        <form id="form-rodartestese" method="POST" action="/agenda/<%=idempresa%>">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <button type="button" class="btn btn-primary" id="select-all-btn">selecionar tudo</button>
+            <button type="submit" class="btn btn-primary" id="btn-rodartestesselecionados" disabled>ir para calendario</button>
+          </div>
+          <% testes.forEach(teste => { %>
+            <% if (teste.idempresa == idempresa && teste.status == 0) { %>
+              <div class="d-flex align-items-center">
+                <div class="mr-2">
+                  <input type="checkbox" name="selecionado[]" value="<%= teste.nometeste %>" />
+                </div>
+                <div>
+                  <p><%= teste.nometeste %></p>
+                </div>
+              </div>
+            <% } %>
+          <% }) %>
+          <input type="hidden" name="idempresa" value="<%=idempresa%>" />
+          <input type="hidden" name="nometeste" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+  <%- include ('partials/footer.ejs') %>
+
+  <script>
+    const checkboxes = document.getElementsByName("selecionado[]");
+    const selectAllBtn = document.getElementById("select-all-btn");
+    const submitBtn = document.getElementById("btn-rodartestesselecionados");
+
+    selectAllBtn.addEventListener("click", () => {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = !selectAllBtn.classList.contains("active");
+      });
+      selectAllBtn.classList.toggle("active");
+      submitBtn.disabled = !Array.from(checkboxes).some((c) => c.checked);
+    });
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        submitBtn.disabled = !Array.from(checkboxes).some((c) => c.checked);
+      });
+    });
+  </script> 
+</body>

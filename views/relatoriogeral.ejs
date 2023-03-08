@@ -1,0 +1,45 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <div class="container">
+    <div class="card mt-3">
+      <div class="card-header">
+        <h1>Relatórios</h1>
+        <a class="btn btn-secondary" href="/painel/<%=idempresa%>">Voltar</a>
+      </div>
+      <% videos.forEach(function(video) { %>
+      <div class="card-body">
+        <p class="mb-0">Teste: <%=video.nometeste%></p>
+        <% if (video.resultado === 'Aprovado') { %>
+        <p class="text-white bg-success p-2 mt-2 rounded">Passou!</p>
+
+        <% } else if (video.resultado === 'Falhou') { %>
+        <p class="text-white bg-danger p-2 mt-2 rounded">Falhou.</p>
+
+        <% } %>
+        <p>
+          Data: <%= new Date(video.updatedAt).toLocaleDateString('pt-BR') %>
+        </p>
+        <div class="btn-group">
+          <a type="text" class="btn btn-primary" href="/videos/<%=video.video%>"
+            >ver vídeo</a
+          >
+          <a
+            class="btn btn-secondary"
+            href="/editarteste/<%=video.nometeste%>/<%=idempresa%>"
+            >editar</a
+          >
+          <a
+            class="btn btn-danger"
+            href="/deletarrelatorio/<%=video.video%>/<%=idempresa%>"
+            >deletar relatório</a
+          >
+        </div>
+
+        <hr />
+      </div>
+      <% }) %>
+    </div>
+  </div>
+  <%- include ('partials/footer.ejs') %>
+</body>
