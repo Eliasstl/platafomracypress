@@ -1,0 +1,91 @@
+<%- include ('partials/header.ejs') %>
+<body>
+  <%- include ('partials/navbar.ejs') %>
+  <br />
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Entre com o  novo nome:</h2>
+      </div>
+      <div class="card-body">
+        
+        <form id="form-teste" method="POST" action="/salvarnovonometeste/<%=nometeste%>">
+          <input type="hidden" value="<%=idempresa%>" name="idempresa" />
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="novonometeste"
+              name="novonometeste"
+              placeholder="Nome do teste"
+            />
+          </div>
+          <button id="btn-salvar" type="submit" class="btn btn-primary">
+            salvar teste
+          </button>
+          <a
+            type="reset"
+            class="btn btn-secondary"
+            href="/painel/<%=idempresa%>"
+            >cancelar</a
+          >
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Modal de aviso -->
+  <div
+    class="modal fade"
+    id="modal-aviso"
+    tabindex="-1"
+    aria-labelledby="modal-aviso-label"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-aviso-label">Aviso</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fechar"
+          ></button>
+        </div>
+        <div class="modal-body">O campo do nome não pode estar vazio e deve conter somente letras e números. Caracteres especiais não são permitidos.</div>
+        <div class="modal-footer">
+          <button
+            id="btn-ok"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include ('partials/footer.ejs') %>
+
+  <!-- Script para mostrar o modal de aviso quando o botão "Salvar teste" for clicado sem preencher o nome -->
+  <script>
+    const form = document.querySelector("#form-teste");
+    const btnSalvar = document.querySelector("#btn-salvar");
+    const btnOk = document.querySelector("#btn-ok");
+    const inputNome = document.querySelector("#nome");
+
+    btnSalvar.addEventListener("click", (event) => {
+      const nomeRegExp = /^[A-Za-z0-9\s]+$/;
+      if (inputNome.value.trim() === "" || !nomeRegExp.test(inputNome.value.trim())) {
+        event.preventDefault(); // Cancela o envio do formulário
+        $("#modal-aviso").modal("show"); // Mostra o modal de aviso
+      }
+    });
+
+    btnOk.addEventListener("click", () => {
+      $("#modal-aviso").modal("hide"); // Esconde o modal de aviso
+      location.reload(); // Recarrega a página
+    });
+  </script>
+</body>

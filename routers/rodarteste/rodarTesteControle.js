@@ -69,7 +69,7 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
   const idem = req.params.idem;
   const nteste = req.params.nteste;
   Nometeste.findOne({
-    where: { idempresa: idem, executar: "nao", nometeste: nteste, },
+    where: { idempresa: idem, executar: "nao" },
   })
     .then((registro) => {
       ///atualizar status nome teste
@@ -79,7 +79,6 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
           { executar: "sim" },
           {
             where: {
-              nometeste: nteste,
               idempresa: idem,
               executar: "nao",
             },
@@ -195,7 +194,6 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                     { executar: "nao" },
                     {
                       where: {
-                        nometeste: nteste,
                         idempresa: idem,
                         executar: "sim",
                       },
