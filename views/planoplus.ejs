@@ -1,0 +1,24 @@
+<%- include ('partials/header.ejs') %> <%- include ('partials/navbar.ejs') %>
+
+<div class="container">
+  <div class="card">
+    <div class="card header">
+      <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+        >voltar</a
+      >
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" role="alert">
+        Esta operação faz parte do plano PLUS. Para contratar, entre em contato
+        com nosso WhatsApp.
+        <a
+          href="https://wa.me/5519995065838?text=Olá, gostaria de saber como funciona o plano PLUS do QAPRO"
+          class="btn btn-success"
+          >Contratar Plano PLUS</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>

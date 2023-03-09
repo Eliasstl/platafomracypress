@@ -7,6 +7,19 @@ const bcrypt = require("bcryptjs");
 const adminAuto = require("../../middleware/autorizar");
 const session = require("express-session");
 
+
+
+///
+router.get("/planoplus/:idempresa", adminAuto, (req, res) => {
+  var idempresa = req.params.idempresa;
+  Nometeste.findAll().then((testes) => {
+    res.render("planoplus", {
+      idempresa,
+      testes,
+    });
+  });
+});
+
 // acessar
 router.get("/", (req, res) => {
   res.render("acessar");
