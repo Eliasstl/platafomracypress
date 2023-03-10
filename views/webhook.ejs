@@ -1,0 +1,68 @@
+<%- include ('partials/header.ejs') %> <%- include ('partials/navbar.ejs') %>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>Integrar webhook</h1>
+    </div>
+    <div class="card-body">
+      <h5>Integrar webhook no Discord</h5>
+      <div class="form-group">
+        <a>webhook cadastrado</a>
+      </div>
+
+      <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+        >voltar</a
+      >
+      <hr>
+      <form
+      id="form-salvarwebhook"
+      method="POST"
+      action="/salvarwebhook/<%=idempresa%>"
+      style="border: 1px solid #ddd; padding: 10px"
+    >
+
+    <div class="form-group">
+        <label for="urlPassou">Nome do webhook</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nomewebhook"
+          name="nomewebhook"
+          placeholder="Insira um nome para o webhook"
+        />
+      </div>
+        <div class="form-group">
+          <label for="urlPassou">URL para Passou:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="urlPassou"
+            name="urlPassou"
+            placeholder="Insira a URL para Passou"
+          />
+        </div>
+        <div class="form-group">
+          <label for="urlFalhou">URL para Falhou:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="urlFalhou"
+            name="urlFalhou"
+            placeholder="Insira a URL para Falhou"
+          />
+        </div>
+       
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+      <hr>
+      <div class="alert alert-info" role="alert">
+        Cadastre o webhook para buscar o teste que falhou no input de falha e
+        caso queira cadastrar o webhook para Passou, insira a URL no input
+        correspondente.
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>

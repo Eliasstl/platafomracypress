@@ -19,6 +19,7 @@
         <a href="/agenda/<%=idempresa%>" type="text" class="btn btn-primary">monitoramento de testes</a>
         
         <a href="/relatoriogeral/<%=idempresa%>" type="text" class="btn btn-secondary">relatórios</a>
+        <a href="/cadastrarwebhook/<%=idempresa%>" type="text" class="btn btn-primary">webhook</a>
       </div>
       <% testes.forEach(teste =>{%> <% if( teste.idempresa == idempresa &&
       teste.status == 0 ){%>

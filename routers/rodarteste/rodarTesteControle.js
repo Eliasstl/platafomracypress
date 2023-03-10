@@ -211,6 +211,17 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                       resultado: "Aprovado",
                       video: nomevideo,
                     };
+                    axios
+                      .get(
+                        `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Aprovado/${nomevideo}`
+                      )
+                      .then((response) => {
+                        console.log(response.data);
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                      });
+
                     VideoTeste.create(novoVideoTeste)
                       .then((video) => {
                         console.log("Novo vídeo criado:", video.toJSON());
@@ -224,6 +235,16 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                       resultado: "Falhou",
                       video: nomevideo,
                     };
+                    axios
+                    .get(
+                      `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Falhou/${nomevideo}`
+                    )
+                    .then((response) => {
+                      console.log(response.data);
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                    });
                     VideoTeste.create(novoVideoTeste)
                       .then((video) => {
                         console.log("Novo vídeo criado:", video.toJSON());
