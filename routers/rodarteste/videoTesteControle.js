@@ -11,20 +11,19 @@ const fs = require("fs");
 
 
 
-
 router.get("/relatoriogeral/:idempresa",adminAuto, (req, res) => {
-    var idempresa = req.params.idempresa;
-    VideoTeste.findAll({
-      order: [
-        ['id', 'DESC']
-      ]
-    }).then((videos) => {
-      res.render("relatoriogeral", {
-        idempresa,
-        videos,
-      });
+  var idempresa = req.params.idempresa;
+  console.log("IDEEMPRESA"+idempresa)
+  VideoTeste.findAll({
+    where: { idempresa: idempresa }, // Adiciona a cláusula WHERE aqui
+    order: [['id', 'DESC']]
+  }).then((videos) => {
+    res.render("relatoriogeral", {
+      idempresa,
+      videos,
     });
   });
-  
+});
+
 
 module.exports = router;

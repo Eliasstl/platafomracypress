@@ -7,6 +7,10 @@ const VideoTeste = connection.define("videos", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  idempresa: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   resultado: {
     type: Sequelize.STRING,
     allowNull: false,

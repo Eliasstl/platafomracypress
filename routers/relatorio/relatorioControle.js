@@ -12,7 +12,7 @@ router.get("/deletarrelatorio/:nomevideo/:idempresa", (req, res) => {
   const videoPath = path.join(__dirname, "../../videos", videoFileName);
 
   if (fs.existsSync(videoPath)) {
-    VideoTeste.destroy({ where: { video: videoFileName } })
+    VideoTeste.destroy({ where: { video: videoFileName,idempresa:idempresa  } })
       .then(() => {
         fs.unlink(videoPath, (err) => {
           if (err) {

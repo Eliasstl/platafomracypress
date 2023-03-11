@@ -207,6 +207,7 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                     });
                   if (results[0].totalPassed === 1) {
                     const novoVideoTeste = {
+                      idempresa:idem,
                       nometeste: nteste,
                       resultado: "Aprovado",
                       video: nomevideo,
@@ -231,6 +232,7 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                       });
                   } else if (results[0].totalPassed === 0) {
                     const novoVideoTeste = {
+                      idempresa:idem,
                       nometeste: nteste,
                       resultado: "Falhou",
                       video: nomevideo,
