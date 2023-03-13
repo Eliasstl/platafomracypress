@@ -2,7 +2,7 @@
 import "cypress-xpath";
 
 describe("teste", () => {
- const id = Cypress.env("id");
+  const id = Cypress.env("id");
   const inserir = Cypress.env("inserir");
   const status = Cypress.env("status");
   const tipo = Cypress.env("tipo");
@@ -120,6 +120,10 @@ describe("teste", () => {
       else if (listaTipo[i] == "xpath" && listaFuncao[i] == "value") {
         cy.xpath(listaConteudo[i]).should("have.value", listaInserir[i]);
       }
+      //validando tamanho xpath
+      else if (listaTipo[i] == "xpath" && listaFuncao[i] == "validar tamanho") {
+        cy.xpath(listaConteudo[i]).should("have.length", listaInserir[i]);
+      }
       //validando contem frase css
       else if (listaTipo[i] == "xpath" && listaFuncao[i] == "contem frase") {
         cy.xpath(listaConteudo[i]).should("have.text", listaInserir[i]);
@@ -131,7 +135,10 @@ describe("teste", () => {
       ) {
         cy.get(listaConteudo[i]).should("have.text", listaInserir[i]);
       }
-
+      //validando tamanho xpath
+      else if (listaTipo[i] == "css selector" && listaFuncao[i] == "validar tamanho") {
+        cy.get(listaConteudo[i]).should("have.length", listaInserir[i]);
+      }
       //validando have value com contain
       else if (
         listaTipo[i] == "css selector" &&
