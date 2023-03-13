@@ -65,8 +65,8 @@ router.post(
 );
 
 //rota da api
-router.get("/run-tests/:idem/:nteste", (req, res) => {
-  const idem = req.params.idem;
+router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
+  const idem = req.params.idempresa;
   const nteste = req.params.nteste;
   Nometeste.findOne({
     where: { idempresa: idem, executar: "nao" },
@@ -112,6 +112,7 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
             const conteudo = passos.map((passo) => passo.conteudo).join("| ");
             const funcao = passos.map((passo) => passo.funcao).join("| ");
             const forca = passos.map((passo) => passo.forca).join("| ");
+            const tecla = passos.map((passo) => passo.tecla).join("| ");
             const status = passos.map((passo) => passo.status).join("| ");
             const inserir = passos.map((passo) => passo.inserir).join("| ");
             const esperar = passos.map((passo) => passo.esperar).join("| ");
@@ -157,7 +158,11 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                 "\n" +
                 "const forca =" +
                 forca +
-                "\n"
+                "\n" +
+                "const tecla =" +
+                tecla +
+                "\n" 
+              
             );
             // separando a string
 
@@ -183,6 +188,7 @@ router.get("/run-tests/:idem/:nteste", (req, res) => {
                       status,
                       tamanho,
                       forca,
+                      tecla,
                       nomevideo,
                     }, // Passa o texto como variável de ambiente para o Cypress
                   });

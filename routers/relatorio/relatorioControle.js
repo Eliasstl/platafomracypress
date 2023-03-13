@@ -5,8 +5,9 @@ const fs = require("fs");
 const Nometeste = require("../../database/Nometeste");
 const Cadastrar = require("../../database/Cadastrar");
 const VideoTeste = require("../../database/VideoTeste");
+const adminAuto = require("../../middleware/autorizar")
 
-router.get("/deletarrelatorio/:nomevideo/:idempresa", (req, res) => {
+router.get("/deletarrelatorio/:nomevideo/:idempresa", adminAuto,(req, res) => {
   const videoFileName = req.params.nomevideo;
   const idempresa = req.params.idempresa;
   const videoPath = path.join(__dirname, "../../videos", videoFileName);

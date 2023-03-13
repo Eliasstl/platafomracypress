@@ -63,6 +63,7 @@ router.get("/selecionargrupo/:titulo/:nometeste/:idempresa",adminAuto, (req, res
           status: 0,
           inserir: grupo.inserir,
           forca: grupo.forca,
+          tecla:grupo.tecla,
           nomegrupo: grupo.nomegrupo,
           esperar: grupo.esperar,
           tamanho: grupos.length,
@@ -161,6 +162,7 @@ router.get("/movergruposub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
     const status2 = passo2.status;
     const inserir2 = passo2.inserir;
     const forca2 = passo2.forca;
+    const tecla2 = passo2.tecla;
     const esperar2 = passo2.esperar;
 
     Grupo.findByPk(id).then((passo) => {
@@ -178,6 +180,7 @@ router.get("/movergruposub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
       const status1 = passo.status;
       const inserir1 = passo.inserir;
       const forca1 = passo.forca;
+      const tecla1 = passo2.tecla;
       const esperar1 = passo.esperar;
 
       Grupo.update(
@@ -191,6 +194,7 @@ router.get("/movergruposub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
           status: status2,
           inserir: inserir2,
           forca: forca2,
+          tecla:tecla2,
           esperar: esperar2,
         },
         { where: { id: id } }
@@ -206,6 +210,7 @@ router.get("/movergruposub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
             status: status1,
             inserir: inserir1,
             forca: forca1,
+            tecla:tecla1,
             esperar: esperar1,
           },
           { where: { id: idPlus } }
@@ -240,6 +245,7 @@ router.get("/movergrupodes/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
     const status2 = passo2.status;
     const inserir2 = passo2.inserir;
     const forca2 = passo2.forca;
+    const tecla2 = passo2.tecla;
     const esperar2 = passo2.esperar;
 
     Grupo.findByPk(id).then((passo) => {
@@ -257,6 +263,7 @@ router.get("/movergrupodes/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
       const status1 = passo.status;
       const inserir1 = passo.inserir;
       const forca1 = passo.forca;
+      const tecla1 = passo.tecla
       const esperar1 = passo.esperar;
 
       Grupo.update(
@@ -270,6 +277,7 @@ router.get("/movergrupodes/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
           status: status2,
           inserir: inserir2,
           forca: forca2,
+          tecla: tecla2,
           esperar: esperar2,
         },
         { where: { id: id } }
@@ -285,6 +293,7 @@ router.get("/movergrupodes/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
             status: status1,
             inserir: inserir1,
             forca: forca1,
+            tecla:tecla1,
             esperar: esperar1,
           },
           { where: { id: idPlus } }
@@ -333,6 +342,8 @@ router.post("/atualizarpassogrupo/", (req, res) => {
   var idpasso = req.body.idpasso;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
+  var tecla = req.body.tecla;
+
   var esperar = req.body.esperar;
 
   Grupo.update(
@@ -344,6 +355,7 @@ router.post("/atualizarpassogrupo/", (req, res) => {
       funcao: funcao,
       inserir: inserir,
       forca: forca,
+      tecla:tecla,
       status: 0,
       esperar: esperar,
       titulo: titulo,
@@ -375,6 +387,7 @@ router.post("/atualizarpassodadosgrupo/", (req, res) => {
   var idpasso = req.body.idpasso;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
+  var tecla = req.body.tecla;
   var esperar = req.body.esperar;
   var passotitulo = req.body.passotitulo;
 
@@ -386,6 +399,7 @@ router.post("/atualizarpassodadosgrupo/", (req, res) => {
       funcao: funcao,
       inserir: inserir,
       forca: forca,
+      tecla:tecla,
       status: 0,
       esperar: esperar,
       titulo: titulo,
@@ -404,6 +418,7 @@ router.post("/atualizarpassodadosgrupo/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
+        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -421,6 +436,7 @@ router.post("/atualizarpassodadosgrupo/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
+        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -557,6 +573,7 @@ router.get("/adicionardadosgrupo/:id/:nometeste/:idempresa", adminAuto,(req, res
         funcao: item.funcao,
         inserir: item.inserir,
         forca: item.forca,
+        tecla:item.tecla,
         status: 0,
         esperar: item.esperar,
       })
@@ -580,6 +597,7 @@ router.post("/salvarpassogrupo/", (req, res) => {
   var funcao = req.body.funcao;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
+  var tecla = req.body.tecla;
   var esperar = req.body.esperar;
 
   Biblioteca.findAll({ where: { idempresa: idempresa, titulo: titulo } })
@@ -595,6 +613,7 @@ router.post("/salvarpassogrupo/", (req, res) => {
           funcao: funcao,
           inserir: inserir,
           forca: forca,
+          tecla:tecla,
           status: 0,
           esperar: esperar,
         })
@@ -608,6 +627,7 @@ router.post("/salvarpassogrupo/", (req, res) => {
               funcao: funcao,
               inserir: inserir,
               forca: forca,
+              tecla:tecla,
               status: 0,
               esperar: esperar,
             }).then(() => {

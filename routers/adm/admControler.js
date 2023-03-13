@@ -24,7 +24,7 @@ router.get("/planoplus/:idempresa", adminAuto, (req, res) => {
 router.get("/", (req, res) => {
   res.render("acessar");
 });
-router.get("/sair/:idempresa", (req, res) => {
+router.get("/sair/:idempresa", adminAuto, (req, res) => {
   var idempresa = req.params.idempresa;
 
   // Verifica se idempresa é um número inteiro

@@ -9,6 +9,7 @@ describe("teste", () => {
   const conteudo = Cypress.env("conteudo");
   const funcao = Cypress.env("funcao");
   const tamanho = Cypress.env("tamanho");
+  const tecla = Cypress.env("tecla");
 
   it("teste", () => {
     // let nometeste = "exemplo de, uma string, com vírgulas";
@@ -16,11 +17,24 @@ describe("teste", () => {
     let novaTipo = "";
     let novaConteudo = "";
     let novaFuncao = "";
+    let novaTecla = "";
     let listaFuncao = [];
     let listaInserir = [];
     let listaTipo = [];
     let listaConteudo = [];
+    let listaTecla = [];
 
+
+    for (let i = 0; i < tecla.length; i++) {
+      let letra = tecla[i];
+      if (letra === "|") {
+        // remove a condição para espaços em branco
+        listaTecla.push(novaTecla.trim()); // adiciona a substring sem espaços em branco
+        novaTecla = "";
+      } else {
+        novaTecla += letra;
+      }
+    }
     for (let i = 0; i < funcao.length; i++) {
       let letra = funcao[i];
       if (letra === "|") {
@@ -67,6 +81,9 @@ describe("teste", () => {
     if (novaTipo !== "") {
       listaTipo.push(novaTipo.trim()); // adiciona a última substring sem espaços em branco
     }
+    if (novaTecla !== "") {
+      listaTecla.push(novaTecla.trim()); // adiciona a última substring sem espaços em branco
+    }
 
     // Adiciona a última substring, já que não há mais vírgulas após ela
     if (novaInserir !== "") {
@@ -107,6 +124,11 @@ describe("teste", () => {
         // captura uma imagem da página e salva com o nome 'pagina_inicial.png' na pasta 'screenshots'
         cy.screenshot("pagina_inicial", { folder: "screenshots" });
       }
+
+      //criando um passo inserir valor e simular uma tecla com xpath
+      else if (listaTipo[i] == "xpath" && listaFuncao[i] == "Inserir valor e simular tecla") {
+        cy.xpath(listaConteudo[i]).type(listaInserir[i]+'{'+listaTecla[i]+'}')
+      }
       //criando um passo clique com xpath
       else if (listaTipo[i] == "xpath" && listaFuncao[i] == "clique") {
         cy.xpath(listaConteudo[i]).click();
@@ -139,6 +161,7 @@ describe("teste", () => {
       else if (listaTipo[i] == "css selector" && listaFuncao[i] == "validar tamanho") {
         cy.get(listaConteudo[i]).should("have.length", listaInserir[i]);
       }
+      
       //validando have value com contain
       else if (
         listaTipo[i] == "css selector" &&
@@ -159,6 +182,10 @@ describe("teste", () => {
       else if (listaTipo[i] == "css selector" && listaFuncao[i] == "clique") {
         cy.get(listaConteudo[i]).click();
       }
+         //criando um passo inserir valor e simular uma tecla com css
+         else if (listaTipo[i] == "css selector" && listaFuncao[i] == "Inserir valor e simular tecla") {
+          cy.get(listaConteudo[i]).type(listaInserir[i]+'{'+listaTecla[i]+'}')
+        }
     }
   });
 });

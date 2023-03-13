@@ -6,7 +6,7 @@ const Passo = require("../../database/Passoteste");
 const VideoTeste = require("../../database/VideoTeste");
 const adminAuto = require("../../middleware/autorizar");
 
-router.get("/atualizarnometeste/:nometeste/:idempresa", (req, res) => {
+router.get("/atualizarnometeste/:nometeste/:idempresa",adminAuto, (req, res) => {
   var nometeste = req.params.nometeste;
   var idempresa = req.params.idempresa;
   res.render("editarnometeste", { nometeste, idempresa });

@@ -38,6 +38,10 @@ const Passo = connection.define("passos", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  tecla: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   nomegrupo: {
     type: Sequelize.STRING,
     allowNull: true,

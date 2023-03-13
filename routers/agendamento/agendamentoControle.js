@@ -6,14 +6,7 @@ const Nometeste = require("../../database/Nometeste");
 const Cadastrar = require("../../database/Cadastrar");
 const Agendamento = require("../../database/Agendamento");
 const adminAuto = require("../../middleware/autorizar");
-// Restante do código aqui...
-
-
 const moment = require('moment');
-
-
-
-
 
 router.post(
   "/salvaragendamento/:idempresa/",
@@ -43,7 +36,7 @@ router.post(
   }
 );
 
-router.get("/agenda/:idempresa", (req, res) => {
+router.get("/agenda/:idempresa", adminAuto, (req, res) => {
   const idempresa = req.params.idempresa
   
     res.render("agenda", { idempresa });

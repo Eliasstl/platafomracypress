@@ -40,6 +40,7 @@ router.post("/atualizarpassodados/", (req, res) => {
   var idpasso = req.body.idpasso;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
+  var tecla = req.body.tecla;
   var esperar = req.body.esperar;
   var passotitulo = req.body.passotitulo;
 
@@ -51,6 +52,7 @@ router.post("/atualizarpassodados/", (req, res) => {
       funcao: funcao,
       inserir: inserir,
       forca: forca,
+      tecla:tecla,
       status: 0,
       esperar: esperar,
       titulo: titulo,
@@ -69,6 +71,7 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
+        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -86,6 +89,7 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
+        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -173,6 +177,7 @@ router.get("/adicionardados/:id/:nometeste/:idempresa",adminAuto, (req, res) => 
         funcao: item.funcao,
         inserir: item.inserir,
         forca: item.forca,
+        tecla:item.tecla,
         status: 0,
         esperar: item.esperar,
       })

@@ -7,8 +7,9 @@ const Webhook = require("../../database/webhook");
 const VideoTeste = require("../../database/VideoTeste");
 const FormData = require("form-data");
 const axios = require("axios");
+const adminAuto = require("../../middleware/autorizar");
 
-router.post("/deletarwebhook/:idempresa/:discord/:key", (req, res) => {
+router.post("/deletarwebhook/:idempresa/:discord/:key",adminAuto, (req, res) => {
   const idempresa = req.params.idempresa;
   const discord = req.params.discord;
   const key = req.params.key;
@@ -28,12 +29,12 @@ router.post("/deletarwebhook/:idempresa/:discord/:key", (req, res) => {
     });
 });
 
-router.get("/cadastrarwebhook/:idempresa", (req, res) => {
+router.get("/cadastrarwebhook/:idempresa",adminAuto, (req, res) => {
   const idempresa = req.params.idempresa;
   res.render("webhook", { idempresa});
  
 });
-router.post("/salvarwebhook/:idempresa", (req, res) => {
+router.post("/salvarwebhook/:idempresa",adminAuto, (req, res) => {
   const idempresa = req.params.idempresa;
   const urlPassou = req.body.urlPassou;
   const urlFalhou = req.body.urlFalhou;
@@ -74,7 +75,7 @@ router.post("/salvarwebhook/:idempresa", (req, res) => {
 });
 
 router.get(
-  "/webhookdiscord/:idempresa/:nometeste/:resultado/:nomevideo",
+  "/webhookdiscord/:idempresa/:nometeste/:resultado/:nomevideo",adminAuto,
   (req, res) => {
     const videoFileName = req.params.nomevideo;
     const nometeste = req.params.nometeste;
