@@ -65,7 +65,7 @@ router.post(
 );
 
 //rota da api
-router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
+router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
   const idem = req.params.idempresa;
   const nteste = req.params.nteste;
   Nometeste.findOne({
@@ -112,7 +112,6 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
             const conteudo = passos.map((passo) => passo.conteudo).join("| ");
             const funcao = passos.map((passo) => passo.funcao).join("| ");
             const forca = passos.map((passo) => passo.forca).join("| ");
-            const tecla = passos.map((passo) => passo.tecla).join("| ");
             const status = passos.map((passo) => passo.status).join("| ");
             const inserir = passos.map((passo) => passo.inserir).join("| ");
             const esperar = passos.map((passo) => passo.esperar).join("| ");
@@ -158,11 +157,7 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
                 "\n" +
                 "const forca =" +
                 forca +
-                "\n" +
-                "const tecla =" +
-                tecla +
-                "\n" 
-              
+                "\n"
             );
             // separando a string
 
@@ -188,7 +183,6 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
                       status,
                       tamanho,
                       forca,
-                      tecla,
                       nomevideo,
                     }, // Passa o texto como variável de ambiente para o Cypress
                   });
@@ -213,7 +207,7 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
                     });
                   if (results[0].totalPassed === 1) {
                     const novoVideoTeste = {
-                      idempresa:idem,
+                      idempresa: idem,
                       nometeste: nteste,
                       resultado: "Aprovado",
                       video: nomevideo,
@@ -228,6 +222,17 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
                       .catch((error) => {
                         console.error(error);
                       });
+                      axios
+                      .get(
+                        `http://localhost:3000/webhookworkplaceenviar/${idem}/${nteste}/Aprovado/${nomevideo}`
+                      )
+                      .then((response) => {
+                        console.log(response.data);
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                      });
+  
 
                     VideoTeste.create(novoVideoTeste)
                       .then((video) => {
@@ -238,21 +243,32 @@ router.get("/run-tests/:idempresa/:nteste",adminAuto,(req, res) => {
                       });
                   } else if (results[0].totalPassed === 0) {
                     const novoVideoTeste = {
-                      idempresa:idem,
+                      idempresa: idem,
                       nometeste: nteste,
                       resultado: "Falhou",
                       video: nomevideo,
                     };
                     axios
-                    .get(
-                      `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Falhou/${nomevideo}`
-                    )
-                    .then((response) => {
-                      console.log(response.data);
-                    })
-                    .catch((error) => {
-                      console.error(error);
-                    });
+                      .get(
+                        `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Falhou/${nomevideo}`
+                      )
+                      .then((response) => {
+                        console.log(response.data);
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                      });
+                    axios
+                      .get(
+                        `http://localhost:3000/webhookworkplaceenviar/${idem}/${nteste}/Falhou/${nomevideo}`
+                      )
+                      .then((response) => {
+                        console.log(response.data);
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                      });
+
                     VideoTeste.create(novoVideoTeste)
                       .then((video) => {
                         console.log("Novo vídeo criado:", video.toJSON());

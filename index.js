@@ -13,7 +13,8 @@ const bibliotecaControle = require("./routers/biblioteca/bibliotecaControle");
 const grupoPassoControle = require("./routers/biblioteca/grupoPassoControle");
 const videoTesteControle = require("./routers/rodarteste/videoTesteControle");
 const agendamentoControle = require("./routers/agendamento/agendamentoControle");
-const Webhook = require("./routers/webhook/webhookControle")
+const webhookDiscordControle= require("./routers/webhook/webhookDiscordControle")
+const webhookWorkplaceControle= require("./routers/webhook/webhookWorkplaceControle")
 const Agendamento = require("./database/Agendamento");
 
 const port = process.env.PORT || 3000;
@@ -52,7 +53,9 @@ app.use("/", bibliotecaControle);
 app.use("/", grupoPassoControle);
 app.use("/", videoTesteControle);
 app.use("/", agendamentoControle);
-app.use("/",Webhook)
+app.use("/",webhookDiscordControle);
+app.use("/",webhookWorkplaceControle)
+
 
 setInterval(async () => {
  

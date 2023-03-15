@@ -34,10 +34,7 @@ const Biblioteca = connection.define("dados", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  tecla: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+
   esperar: {
     type: Sequelize.STRING,
     allowNull: false,

@@ -3,31 +3,35 @@ const router = express.Router();
 const Passo = require("../../database/Passoteste");
 const Grupo = require("../../database/GrupoTeste");
 const Biblioteca = require("../../database/Biblioteca");
-const adminAuto = require("../../middleware/autorizar")
+const adminAuto = require("../../middleware/autorizar");
 
 ///editar passo em lista de passo
-router.get("/editardadospasso/:id/:nometeste/:idempresa", adminAuto,(req, res) => {
-  const idempresa = req.params.idempresa;
-  const id = req.params.id;
-  const nometeste = req.params.nometeste;
+router.get(
+  "/editardadospasso/:id/:nometeste/:idempresa",
+  adminAuto,
+  (req, res) => {
+    const idempresa = req.params.idempresa;
+    const id = req.params.id;
+    const nometeste = req.params.nometeste;
 
-  Biblioteca.findAll({ where: { id: id, idempresa: idempresa } })
-    .then((testes) => {
-      if (!testes || testes.length === 0) {
-        res.status(404).send("Passo não encontrado");
-      } else {
-        res.render("editardadospasso", {
-          testes: testes,
-          nometeste: nometeste,
-          idempresa
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Erro ao buscar passo na biblioteca: " + err);
-    });
-});
+    Biblioteca.findAll({ where: { id: id, idempresa: idempresa } })
+      .then((testes) => {
+        if (!testes || testes.length === 0) {
+          res.status(404).send("Passo não encontrado");
+        } else {
+          res.render("editardadospasso", {
+            testes: testes,
+            nometeste: nometeste,
+            idempresa,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Erro ao buscar passo na biblioteca: " + err);
+      });
+  }
+);
 
 // artualizar dados
 router.post("/atualizarpassodados/", (req, res) => {
@@ -40,7 +44,6 @@ router.post("/atualizarpassodados/", (req, res) => {
   var idpasso = req.body.idpasso;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
-  var tecla = req.body.tecla;
   var esperar = req.body.esperar;
   var passotitulo = req.body.passotitulo;
 
@@ -52,7 +55,6 @@ router.post("/atualizarpassodados/", (req, res) => {
       funcao: funcao,
       inserir: inserir,
       forca: forca,
-      tecla:tecla,
       status: 0,
       esperar: esperar,
       titulo: titulo,
@@ -71,7 +73,6 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
-        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -80,7 +81,7 @@ router.post("/atualizarpassodados/", (req, res) => {
           titulo: passotitulo,
         },
       }
-    )
+    );
     Grupo.update(
       {
         titulo: titulo,
@@ -89,7 +90,6 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
-        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -127,72 +127,79 @@ router.post("/atualizarpassodados/", (req, res) => {
 });
 
 ///deletar passo em lista de passo
-router.get("/deletadadospasso/:id/:nometeste/:idempresa",adminAuto,(req, res) => {
-  const id = req.params.id;
-  const nometeste = req.params.nometeste;
-  const idempresa = req.params.idempresa;
+router.get(
+  "/deletadadospasso/:id/:nometeste/:idempresa",
+  adminAuto,
+  (req, res) => {
+    const id = req.params.id;
+    const nometeste = req.params.nometeste;
+    const idempresa = req.params.idempresa;
 
-  Biblioteca.findOne({
-    where: { id: id },
-  }).then((dados) => {
-    if (dados) {
-      Biblioteca.destroy({
-        where: { id: id },
-      }).then(() => {
-        Biblioteca.findAll({
-          where: {
-            idempresa: idempresa,
-          },
-        })
-          .then((dados) => {
-            res.render("dados", {
-              dados,
-              nometeste: nometeste,
+    Biblioteca.findOne({
+      where: { id: id },
+    }).then((dados) => {
+      if (dados) {
+        Biblioteca.destroy({
+          where: { id: id },
+        }).then(() => {
+          Biblioteca.findAll({
+            where: {
               idempresa: idempresa,
-            });
+            },
           })
-          .catch((erro) => {
-            res.redirect("/adicionarpasso");
-            console.log("Erro ao excluir passo" + erro);
-          });
-      });
-    }
-  });
-});
+            .then((dados) => {
+              res.render("dados", {
+                dados,
+                nometeste: nometeste,
+                idempresa: idempresa,
+              });
+            })
+            .catch((erro) => {
+              res.redirect("/adicionarpasso");
+              console.log("Erro ao excluir passo" + erro);
+            });
+        });
+      }
+    });
+  }
+);
 
 //adicionar passo no teste
-router.get("/adicionardados/:id/:nometeste/:idempresa",adminAuto, (req, res) => {
-  const id = req.params.id;
-  const nometeste = req.params.nometeste;
-  const idempresa = req.params.idempresa;
+router.get(
+  "/adicionardados/:id/:nometeste/:idempresa",
+  adminAuto,
+  (req, res) => {
+    const id = req.params.id;
+    const nometeste = req.params.nometeste;
+    const idempresa = req.params.idempresa;
 
-  Biblioteca.findAll({ where: { id: id } }).then((dados) => {
-    dados.forEach((item) => {
-      Passo.create({
-        idempresa: item.idempresa,
-        nometeste: nometeste,
-        titulo: item.titulo,
-        tipo: item.tipo,
-        conteudo: item.conteudo,
-        funcao: item.funcao,
-        inserir: item.inserir,
-        forca: item.forca,
-        tecla:item.tecla,
-        status: 0,
-        esperar: item.esperar,
-      })
-        .then(() => {
-          res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+    Biblioteca.findAll({ where: { id: id } }).then((dados) => {
+      dados.forEach((item) => {
+        Passo.create({
+          idempresa: item.idempresa,
+          nometeste: nometeste,
+          titulo: item.titulo,
+          tipo: item.tipo,
+          conteudo: item.conteudo,
+          funcao: item.funcao,
+          inserir: item.inserir,
+          forca: item.forca,
+          status: 0,
+          esperar: item.esperar,
         })
-        .catch((erro) => {
-          console.log("Erro ao cadastrar passo" + erro);
-        });
+          .then(() => {
+            res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+          })
+          .catch((erro) => {
+            console.log("Erro ao cadastrar passo" + erro);
+          });
+      });
     });
-  });
-});
+  }
+);
 
 //buscar passos
-router.get("/meusdados/:nometeste/:idempresa",adminAuto, (req, res) => {
+router.get("/meusdados/:nometeste/:idempresa", adminAuto, (req, res) => {
   const idempresa = req.params.idempresa;
   const nometeste = req.params.nometeste;
 

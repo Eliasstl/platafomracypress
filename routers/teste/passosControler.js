@@ -31,7 +31,6 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
     const status2 = passo2.status;
     const inserir2 = passo2.inserir;
     const forca2 = passo2.forca;
-    const tecla = passo2.tecla;
     const esperar2 = passo2.esperar;
 
     Passo.findByPk(id).then((passo) => {
@@ -49,7 +48,6 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
       const status1 = passo.status;
       const inserir1 = passo.inserir;
       const forca1 = passo.forca;
-      const tecla1 = passo.tecla;
       const esperar1 = passo.esperar;
 
       Passo.update(
@@ -63,7 +61,6 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
           status: status2,
           inserir: inserir2,
           forca: forca2,
-          tecla:tecla2,
           esperar: esperar2,
         },
         { where: { id: id } }
@@ -79,7 +76,6 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
             status: status1,
             inserir: inserir1,
             forca: forca1,
-            tecla:tecla1,
             esperar: esperar1,
           },
           { where: { id: idPlus } }
@@ -114,7 +110,6 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
     const status2 = passo2.status;
     const inserir2 = passo2.inserir;
     const forca2 = passo2.forca;
-    const tecla2 = passo2.tecla;
     const esperar2 = passo2.esperar;
 
     Passo.findByPk(id).then((passo) => {
@@ -132,7 +127,6 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
       const status1 = passo.status;
       const inserir1 = passo.inserir;
       const forca1 = passo.forca;
-      const tecla1 = passo2.tecla;
       const esperar1 = passo.esperar;
 
       Passo.update(
@@ -146,7 +140,6 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
           status: status2,
           inserir: inserir2,
           forca: forca2,
-          tecla:tecla2,
           esperar: esperar2,
         },
         { where: { id: id } }
@@ -162,7 +155,6 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
             status: status1,
             inserir: inserir1,
             forca: forca1,
-            tecla:tecla1,
             esperar: esperar1,
           },
           { where: { id: idPlus } }
@@ -196,7 +188,6 @@ router.post("/salvarpasso/", (req, res) => {
   var funcao = req.body.funcao;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
-  var tecla= req.body.tecla;
 
   var esperar = req.body.esperar;
 
@@ -213,7 +204,6 @@ router.post("/salvarpasso/", (req, res) => {
           funcao: funcao,
           inserir: inserir,
           forca: forca,
-          tecla:tecla,
           status: 0,
           esperar: esperar,
         })
@@ -227,7 +217,6 @@ router.post("/salvarpasso/", (req, res) => {
               funcao: funcao,
               inserir: inserir,
               forca: forca,
-              tecla:tecla,
               status: 0,
               esperar: esperar,
             }).then(() => {
@@ -290,10 +279,8 @@ router.post("/atualizarpassodados/", (req, res) => {
   var tipo = req.body.tipo;
   var conteudo = req.body.conteudo;
   var funcao = req.body.funcao;
-  var idpasso = req.body.idpasso;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
-  var tecla = req.body.tecla;
   var esperar = req.body.esperar;
   var passotitulo = req.body.passotitulo;
 
@@ -305,7 +292,6 @@ router.post("/atualizarpassodados/", (req, res) => {
       funcao: funcao,
       inserir: inserir,
       forca: forca,
-      tecla:tecla,
       status: 0,
       esperar: esperar,
       titulo: titulo,
@@ -324,8 +310,6 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
-        tecla:tecla,
-        tecla:tecla,
         status: 0,
         esperar: esperar,
       },
@@ -343,7 +327,6 @@ router.post("/atualizarpassodados/", (req, res) => {
         funcao: funcao,
         inserir: inserir,
         forca: forca,
-        tecla:tecla,
         status: 0,
         esperar: esperar,
       },

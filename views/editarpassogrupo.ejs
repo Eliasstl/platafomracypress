@@ -32,6 +32,10 @@
           </div>
           <div class="form-group">
             <label for="locatorValue">Inserir:</label>
+            <div class="alert alert-warning" role="alert">
+              Para simular uma tecla colocar o nome dela entre { }. Exemplo: digitando uma palavra apagando duas letras com o 
+              tecla backspace e acionando a tecla enter{backspace}{backspace}{enter}.
+            </div>
             <input type="text" class="form-control" value="<%=teste.inserir%>" name="inserir" />
           </div>
           <div class="form-group">
@@ -41,14 +45,6 @@
               <option value="  "></option>
               <option>Sim</option>
               <option>Não</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="actionType">Inserir valor e simular tecla</label>
-            <select class="form-control" name="tecla">
-              <option><%=teste.tecla%></option>
-              <option value="  "></option>
-              <option>enter</option>
             </select>
           </div>
           <div class="form-group">
@@ -75,7 +71,8 @@
               <option>contem frase</option>
               <option>validar tamanho</option>
               <option>navegar</option>
-              <option>Inserir valor e simular tecla</option>
+                <option>não existe</option>
+          <option>limpar campo de texto</option>
             
             </select>
           </div>

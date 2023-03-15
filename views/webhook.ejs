@@ -6,34 +6,31 @@
       <form
         id="deletarwebhook"
         method="POST"
-        action="/deletarwebhook/<%=idempresa%>/discord/key"
+        action="/deletarwebhook/<%=idempresa%>/"
         style="border: 1px solid #ddd; padding: 10px"
       >
-        <div class="form-group">
-          <h1>Integrar webhook</h1>
-          <a
-            type="reset"
-            class="btn btn-secondary"
-            href="/painel/<%=idempresa%>"
-            >voltar</a
-          >
-      
-        </div>
+      <div class="form-group">
+        <h1>Integrar webhook discord</h1>
+        <hr>
+        <a
+          type="reset"
+          class="btn btn-secondary"
+          href="/painel/<%=idempresa%>"
+          >voltar</a
+        >
+        <a href="/cadastrarwebhook/<%=idempresa%>" type="text" class="btn btn-primary">discord</a>
+        <a href="/webhookworkplace/<%=idempresa%>" class="btn btn-primary">workplace</a>
+    
+      </div>
     
     </div>
     <div class="card-body">
       <h5>Integrar webhook no Discord</h5>
      
         <div class="form-group">
-          <div class="alert alert-warning" role="alert">
-            <strong>Atenção!</strong> Caso tenha cadastrado um webhook, somente é permitido um para falha e um para resultado passado. Se deseja alterar o webhook, clique no botão "Deletar" para que todos os webhooks do Discord sejam excluídos.
-          </div>
-          
+           
           <button type="submit" class="btn btn-danger">deletar</button>
         </div>
-      
-    
-
       <hr />
     </form>
       <form
@@ -42,45 +39,21 @@
         action="/salvarwebhook/<%=idempresa%>"
         style="border: 1px solid #ddd; padding: 10px"
       >
+     
         <div class="form-group">
-          <label for="urlPassou">Nome do webhook</label>
+          <label for="url">URL:</label>
           <input
             type="text"
             class="form-control"
-            id="nomewebhook"
-            name="nomewebhook"
-            placeholder="Insira um nome para o webhook"
-          />
-        </div>
-        <div class="form-group">
-          <label for="urlPassou">URL para Passou:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="urlPassou"
-            name="urlPassou"
-            placeholder="Insira a URL para Passou"
-          />
-        </div>
-        <div class="form-group">
-          <label for="urlFalhou">URL para Falhou:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="urlFalhou"
-            name="urlFalhou"
-            placeholder="Insira a URL para Falhou"
+            id="url"
+            name="url"
+            placeholder="Insira a URL do discord"
           />
         </div>
 
         <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
       <hr />
-      <div class="alert alert-info" role="alert">
-        Cadastre o webhook para buscar o teste que falhou no input de falha e
-        caso queira cadastrar o webhook para Passou, insira a URL no input
-        correspondente.
-      </div>
     </div>
   </div>
 </div>

@@ -39,10 +39,7 @@ const Grupo = connection.define("grupos", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  tecla: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+ 
   esperar: {
     type: Sequelize.STRING,
     allowNull: false,

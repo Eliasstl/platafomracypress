@@ -1,0 +1,74 @@
+<%- include ('partials/header.ejs') %> <%- include ('partials/navbar.ejs') %>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <form
+        id="deletarwebhook"
+        method="POST"
+        action="/deletarwebhookworkplace/<%=idempresa%>"
+        style="border: 1px solid #ddd; padding: 10px"
+      >
+        <div class="form-group">
+          <h1>Integrar webhook workplace</h1>
+          <hr>
+          <a
+            type="reset"
+            class="btn btn-secondary"
+            href="/painel/<%=idempresa%>"
+            >voltar</a
+          >
+          <a href="/cadastrarwebhook/<%=idempresa%>" type="text" class="btn btn-primary">discord</a>
+          <a href="/webhookworkplace/<%=idempresa%>" class="btn btn-primary">workplace</a>
+          
+      
+        </div>
+    
+    </div>
+    <div class="card-body">
+      <h5>Integrar webhook no workplace</h5>
+     
+        <div class="form-group">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Aviso</h4>
+                <p>Você não tinha webhook cadastrado.</p>
+              </div>
+          
+          <button type="submit" class="btn btn-danger">deletar</button>
+            </div>
+      <hr />
+    </form>
+      <form
+        id="form-salvarwebhook"
+        method="POST"
+        action="/salvarwebhookworkplace/<%=idempresa%>"
+        style="border: 1px solid #ddd; padding: 10px"
+      >
+        <div class="form-group">
+          <label for="idgrupo">Id grupo workplace</label>
+          <input
+            type="text"
+            class="form-control"
+            id="idgrupo"
+            name="idgrupo"
+            placeholder="Insira id grupo disponivel no workplace"
+          />
+        </div>
+        <div class="form-group">
+          <label for="token">Token de acesso</label>
+          <input
+            type="text"
+            class="form-control"
+            id="token"
+            name="token"
+            placeholder="Insira o token de acesso"
+          />
+        </div>
+     
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>
