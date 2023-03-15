@@ -18,7 +18,7 @@ router.get(
     const nometeste = req.params.nometeste;
     const resultado = req.params.resultado;
     const idempresa = req.params.idempresa;
-const msg =`${nometeste} resultdado ${resultado} http://node131305-qapro.jelastic.saveincloud.net:14264/${videoFileName}`
+const msg ="nometeste"+ "resultdado: "+resultado+ "\n" +"http://node131305-qapro.jelastic.saveincloud.net:14264/"+videoFileName
     WebhookWorkplace.findOne({
       where: {
         idempresa: idempresa,
@@ -50,6 +50,7 @@ const msg =`${nometeste} resultdado ${resultado} http://node131305-qapro.jelasti
           }
           const workplace = new Workplace();
           workplace.send(msg);
+          console.log("Webhook wokplaxe enviado")
           res.redirect(`/relatoriogeral/${idempresa}`)
         }
       })
