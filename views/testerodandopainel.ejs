@@ -1,4 +1,5 @@
 <%- include ('partials/header.ejs') %>
+
 <body>
   <%- include ('partials/navbar.ejs') %>
   <br />
@@ -8,9 +9,13 @@
         <hr />
         <h2>Controle de teste</h2>
         <hr />
+
         <div class="alert alert-info alert-dismissible fade show" role="alert">
           <h4 class="alert-heading">Aviso</h4>
-          <p>Seus testes já estão em execução. Aguarde pelo relatório antes de rodar mais testes, tudo bem?.</p>
+          <p>
+            Seus testes já estão em execução. Aguarde pelo relatório antes de
+            rodar mais testes, tudo bem?.
+          </p>
           <button
             type="button"
             class="btn-close"
@@ -21,32 +26,58 @@
         <a
           type="text"
           class="btn btn-primary"
-          href="/gravarnometeste/<%=idempresa%>"
+          href="/gravarnometeste/<%=idempresa%>/<%=token%>"
           >novo caso de teste</a
         >
-        <a href="/rodartestes/<%=idempresa%>" type="text" class="btn btn-secondary">executar testes</a>
-        <a href="/agenda/<%=idempresa%>" type="text" class="btn btn-primary">monitoramento de testes</a>
-        
-        <a href="/relatoriogeral/<%=idempresa%>" type="text" class="btn btn-secondary">relatórios</a>
+        <a
+          href="/rodartestes/<%=idempresa%>/<%=token%>"
+          type="text"
+          class="btn btn-secondary"
+          >executar testes</a
+        >
+        <a
+          href="/agenda/<%=idempresa%>/<%=token%>"
+          type="text"
+          class="btn btn-primary"
+          >monitoramento de testes</a
+        >
+
+        <a
+          href="/relatoriogeral/<%=idempresa%>/<%=token%>"
+          type="text"
+          class="btn btn-secondary"
+          >relatórios</a
+        >
+        <a
+          href="/cadastrarwebhook/<%=idempresa%>/<%=token%>"
+          type="text"
+          class="btn btn-primary"
+          >webhook</a
+        >
       </div>
-      
-        
-       
       <% testes.forEach(teste =>{%> <% if( teste.idempresa == idempresa &&
       teste.status == 0 ){%>
-      <form id="form-deletarpasso" method="POST" action="/deletarteste">
+      <form
+        id="form-deletarpasso"
+        method="POST"
+        action="/deletarteste/<%=idempresa%>/<%=token%>"
+      >
         <input type="hidden" name="nometeste" value="<%=teste.nometeste%>" />
         <input type="hidden" name="idempresa" value="<%=teste.idempresa%>" />
         <div class="card-body">
           <div class="row mt-6">
             <div class="col">
-              <P><%=teste.nometeste%></P>
+              <a
+                class="teste-nome"
+                href="/atualizarnometeste/<%=teste.nometeste%>/<%=idempresa%>/<%=token%>"
+                ><%=teste.nometeste%>
+              </a>
             </div>
 
             <div class="col">
               <a
                 class="btn btn-secondary"
-                href="/editarteste/<%=teste.nometeste%>/<%=idempresa%>"
+                href="/editarteste/<%=teste.nometeste%>/<%=idempresa%>/<%=token%>"
                 >editar</a
               >
               <button
@@ -59,57 +90,11 @@
               <a
                 class="btn btn-warning"
                 id="rodateste"
-                href="/run-tests/<%=idempresa%>/<%=teste.nometeste%>"
+                href="/run-tests/<%=idempresa%>/<%=teste.nometeste%>/<%=token%>"
                 >executar</a
               >
             </div>
           </div>
-          <!-- Modal de confirmação 
-          <div
-            class="modal fade"
-            data-="confirmacao-modal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="confirmacao-modal-titulo"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="confirmacao-modal-titulo">
-                    Confirmar envio
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Fechar"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Tem certeza que deseja deletar esse teste?
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Não
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    id="btn-confirmar-envio"
-                  >
-                    Sim
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>-->
         </div>
       </form>
       <%}%> <%})%>
@@ -117,6 +102,20 @@
   </div>
 
   <%- include ('partials/footer.ejs') %>
+
+  <script
+    src="https://kit.fontawesome.com/your-kit-id.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <style>
+    .edit-icon {
+      display: none;
+    }
+    .teste-nome:hover .edit-icon {
+      display: inline-block;
+    }
+  </style>
 
   <script>
     document
