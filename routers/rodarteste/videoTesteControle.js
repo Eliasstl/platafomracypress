@@ -5,14 +5,14 @@ const router = express.Router();
 const axios = require("axios");
 const Passo = require("../../database/Passoteste");
 const VideoTeste = require("../../database/VideoTeste");
-const adminAuto = require("../../middleware/autorizar")
+ const adminAuto = require("../../middware/autorizar") 
 const path = require("path");
 const fs = require("fs");
 
 
-
-router.get("/relatoriogeral/:idempresa",adminAuto, (req, res) => {
+router.get("/relatoriogeral/:idempresa/:token",adminAuto,(req, res) => {
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
   console.log("IDEEMPRESA"+idempresa)
   VideoTeste.findAll({
     where: { idempresa: idempresa }, // Adiciona a cláusula WHERE aqui
@@ -21,9 +21,9 @@ router.get("/relatoriogeral/:idempresa",adminAuto, (req, res) => {
     res.render("relatoriogeral", {
       idempresa,
       videos,
+      token
     });
   });
 });
-
 
 module.exports = router;

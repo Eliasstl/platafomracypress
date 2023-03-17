@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
-const Nometeste = require("../../database/Nometeste");
-const Cadastrar = require("../../database/Cadastrar");
+const adminAuto = require("../../middware/autorizar") 
 const VideoTeste = require("../../database/VideoTeste");
-const adminAuto = require("../../middleware/autorizar")
+  
 
-router.get("/deletarrelatorio/:nomevideo/:idempresa", adminAuto,(req, res) => {
+router.get("/deletarrelatorio/:nomevideo/:idempresa/:token", adminAuto ,  (req, res) => {
   const videoFileName = req.params.nomevideo;
   const idempresa = req.params.idempresa;
+  var token = req.params.token;
   const videoPath = path.join(__dirname, "../../videos", videoFileName);
 
   if (fs.existsSync(videoPath)) {
@@ -21,7 +21,7 @@ router.get("/deletarrelatorio/:nomevideo/:idempresa", adminAuto,(req, res) => {
           } else {
             console.log(`O arquivo ${videoFileName} foi excluído.`);
           }
-          res.redirect(`/relatoriogeral/${idempresa}`)
+          res.redirect(`/relatoriogeral/${idempresa}/${token}`)
         });
       })
       .catch((err) => {

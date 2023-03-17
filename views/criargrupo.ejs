@@ -7,7 +7,7 @@
         <hr />
         <h2>Criar grupo de passos</h2>
        
-        <form id="group-form" action="/salvargrupodepasso/<%=nometeste%>/<%=idempresa%>" method="POST">
+        <form id="group-form" action="/salvargrupodepasso/<%=nometeste%>/<%=idempresa%>/<%=token%>" method="POST">
           <div class="form-group">
             <label for="nomegrupo">Nome do Grupo:</label>
             <input type="text" class="form-control" id="nomegrupo" name="nomegrupo" required>
@@ -16,17 +16,17 @@
         </form>
         <hr>
         
-        <a type="reset" class="btn btn-secondary" href="/criarteste/<%=nometeste%>/<%=idempresa%>"
+        <a type="reset" class="btn btn-secondary" href="/criarteste/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >voltar</a>
         
         
         <a
           class="btn btn-primary"
-          href="/adicionarpassogrupo/<%=nometeste%>/<%=idempresa%>"
+          href="/adicionarpassogrupo/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >criar passo</a
         >
         
-         <a type="reset" class="btn btn-secondary" href="/meusdadosgrupo/<%=nometeste%>/<%=idempresa%>"
+         <a type="reset" class="btn btn-secondary" href="/meusdadosgrupo/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >meus passos</a
         >
       
@@ -36,7 +36,7 @@
         <div class="card-body" >
           <% testes.forEach(teste => {%> <% if (teste.idempresa == idempresa &&
           teste.nometeste == nometeste && teste.status == 0) { %>
-          <form id="form-deletarpasso" method="POST" action="/deletarpassogrupo"style="border: 1px solid #ddd;  padding: 10px;">
+          <form id="form-deletarpasso" method="POST" action="/deletarpassogrupo/<%=idempresa%>/<%=token%>"style="border: 1px solid #ddd;  padding: 10px;">
             <input type="hidden" name="idpasso" value="<%= teste.id %>" />
             <input
               type="hidden"
@@ -57,12 +57,12 @@
               </div>
               <div class="col">
                 <div class="btn-group-vertical mt-3 mb-0" role="group">
-                  <a href="/movergruposub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                  <a href="/movergruposub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>/<%=token%>"
                     class="btn btn-outline-secondary btn-sm btn-green"
                     id="btn-moverpassocima">
                     <i class="bi bi-caret-up"></i>
                   </a>
-                  <a href="/movergrupodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                  <a href="/movergrupodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>/<%=token%>"
                     class="btn btn-outline-secondary btn-sm"
                     id="btn-moverpassobaixo">
                     <i class="bi bi-caret-down"></i>
@@ -72,7 +72,7 @@
                 <div class="btn-group" role="group">
                   <a 
                     class="btn btn-secondary btn-sm"
-                    href="/editargrupo/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>"
+                    href="/editargrupo/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>/<%=token%>"
                   >
                     editar passo
                   </a>

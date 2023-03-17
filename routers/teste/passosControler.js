@@ -3,23 +3,20 @@ const router = express.Router();
 const Biblioteca = require("../../database/Biblioteca");
 const Passo = require("../../database/Passoteste");
 const Grupo = require("../../database/GrupoTeste");
-const adminAuto = require("../../middleware/autorizar")
-
-
-
-
+const adminAuto = require("../../middware/autorizar") 
 
 //mover passo para cima
-router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
+router.get("/moverpassosub/:id/:idempresa/:nometeste/:token", adminAuto ,  (req, res) => {
   const id = req.params.id;
   let idPlus = parseInt(id) - 1;
   const idempresa = req.params.idempresa;
   const nometeste = req.params.nometeste;
+  var token = req.params.token;
 
   Passo.findByPk(idPlus).then((passo2) => {
     if (!passo2) {
       console.log("Erro ao encontrar o próximo passo");
-      return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+      return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
     }
 
     const idempresa2 = passo2.idempresa;
@@ -36,7 +33,7 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
     Passo.findByPk(id).then((passo) => {
       if (!passo) {
         console.log("Erro ao encontrar o passo atual");
-        return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+        return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
       }
 
       const idempresa1 = passo.idempresa;
@@ -81,15 +78,17 @@ router.get("/moverpassosub/:id/:idempresa/:nometeste",adminAuto, (req, res) => {
           { where: { id: idPlus } }
         ).then(() => {
           console.log("Linhas invertidas com sucesso");
-          return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+          return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
         });
       });
     });
   });
 });
 
+
 //mover passo para baixo
-router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
+router.get("/moverpassodes/:id/:idempresa/:nometeste/:token", adminAuto , (req, res) => {
+  var token = req.params.token;
   const id = req.params.id;
   const idPlus = parseInt(id) + 1;
   const idempresa = req.params.idempresa;
@@ -98,7 +97,7 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
   Passo.findByPk(idPlus).then((passo2) => {
     if (!passo2) {
       console.log("Erro ao encontrar o próximo passo");
-      return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+      return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
     }
 
     const idempresa2 = passo2.idempresa;
@@ -115,7 +114,7 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
     Passo.findByPk(id).then((passo) => {
       if (!passo) {
         console.log("Erro ao encontrar o passo atual");
-        return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+        return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
       }
 
       const idempresa1 = passo.idempresa;
@@ -129,7 +128,7 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
       const forca1 = passo.forca;
       const esperar1 = passo.esperar;
 
-      Passo.update(
+     Passo.update(
         {
           idempresa: idempresa2,
           nometeste: nometeste2,
@@ -160,26 +159,27 @@ router.get("/moverpassodes/:id/:idempresa/:nometeste", adminAuto,(req, res) => {
           { where: { id: idPlus } }
         ).then(() => {
           console.log("Linhas invertidas com sucesso");
-          return res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+          return res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
         });
       });
     });
   });
 });
-
 //adicionar passo
-router.get("/adicionarpasso/:nometeste/:idempresa",adminAuto, (req, res) => {
+router.get("/adicionarpasso/:nometeste/:idempresa/:token", adminAuto , (req, res) => {
   var nometeste = req.params.nometeste;
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
 
   res.render("adicionarpasso", {
     nometeste: nometeste,
-    idempresa: idempresa,
+    idempresa,
+    token
   });
 });
 
 // salvar passo
-router.post("/salvarpasso/", (req, res) => {
+router.post("/salvarpasso/:idempresa/:token", adminAuto , (req, res) => {
   var nometeste = req.body.nometeste;
   var idempresa = req.body.idempresa;
   var titulo = req.body.titulo;
@@ -188,7 +188,7 @@ router.post("/salvarpasso/", (req, res) => {
   var funcao = req.body.funcao;
   var inserir = req.body.inserir;
   var forca = req.body.forca;
-
+  var token = req.params.token;
   var esperar = req.body.esperar;
 
   Biblioteca.findAll({ where: { idempresa: idempresa, titulo: titulo } })
@@ -220,12 +220,13 @@ router.post("/salvarpasso/", (req, res) => {
               status: 0,
               esperar: esperar,
             }).then(() => {
-              res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+              console.log("ESSE: "+token)
+              res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
               console.log("Passo salvo com sucesso!");
             });
           })
           .catch((erro) => {
-            res.redirect("/adicionarpasso");
+            res.redirect("/adicionarpasso/"+token);
             console.log("Erro ao cadastrar passo" + erro);
           });
       } else {
@@ -235,22 +236,23 @@ router.post("/salvarpasso/", (req, res) => {
             nometeste: nometeste,
             idempresa: idempresa,
             testes: testes,
+            token
           });
         });
       }
     })
     .catch((erro) => {
-      res.redirect("/adicionarpasso");
+      res.redirect("/adicionarpasso/"+token);
       console.log("Erro ao buscar Biblioteca" + erro);
     });
 });
 
 //deletar passso
-router.post("/deletarpasso/", (req, res) => {
+router.post("/deletarpasso/:idempresa/:token", adminAuto , (req, res) => {
   var nometeste = req.body.nometeste;
   var idempresa = req.body.idempresa;
   var idpasso = req.body.idpasso;
-
+  var token = req.params.token;
   Passo.findOne({
     where: { id: idpasso, idempresa: idempresa, nometeste: nometeste },
   }).then((passo) => {
@@ -261,7 +263,7 @@ router.post("/deletarpasso/", (req, res) => {
       })
         .then(() => {
           console.log("Passo excluido com sucesso!");
-          res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+          res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
         })
         .catch((erro) => {
           res.redirect("/adicionarpasso");
@@ -302,7 +304,7 @@ router.post("/atualizarpassodados/", (req, res) => {
       },
     }
   ).then(() => {
-   Grupo.update(
+    Grupo.update(
       {
         titulo: titulo,
         tipo: tipo,
@@ -318,7 +320,7 @@ router.post("/atualizarpassodados/", (req, res) => {
           titulo: passotitulo,
         },
       }
-    )
+    );
     Passo.update(
       {
         titulo: titulo,
@@ -363,17 +365,19 @@ router.post("/atualizarpassodados/", (req, res) => {
   });
 });
 
-router.get("/aditarp/:nometeste/:idempresa/:idpasso",adminAuto, (req, res) => {
+router.get("/aditarp/:nometeste/:idempresa/:idpasso/:token", adminAuto , (req, res) => {
   var nometeste = req.params.nometeste;
   var idempresa = req.params.idempresa;
   var idpasso = req.params.idpasso;
+  var token = req.params.token;
   Passo.findAll().then((testes) => {
-    const filteredTestes = testes.filter(teste => teste.id == idpasso);
+    const filteredTestes = testes.filter((teste) => teste.id == idpasso);
     res.render("editarpasso", {
       nometeste: nometeste,
       idempresa: idempresa,
       testes: filteredTestes,
       idpasso: idpasso,
+      token
     });
   });
 });

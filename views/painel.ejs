@@ -12,30 +12,30 @@
         <a
           type="text"
           class="btn btn-primary"
-          href="/gravarnometeste/<%=idempresa%>"
+          href="/gravarnometeste/<%=idempresa%>/<%=token%>"
           >novo caso de teste</a
         >
-        <a href="/rodartestes/<%=idempresa%>" type="text" class="btn btn-secondary">executar testes</a>
-        <a href="/agenda/<%=idempresa%>" type="text" class="btn btn-primary">monitoramento de testes</a>
+        <a href="/rodartestes/<%=idempresa%>/<%=token%>" type="text" class="btn btn-secondary">executar testes</a>
+        <a href="/agenda/<%=idempresa%>/<%=token%>" type="text" class="btn btn-primary">monitoramento de testes</a>
         
-        <a href="/relatoriogeral/<%=idempresa%>" type="text" class="btn btn-secondary">relatórios</a>
-        <a href="/cadastrarwebhook/<%=idempresa%>" type="text" class="btn btn-primary">webhook</a>
+        <a href="/relatoriogeral/<%=idempresa%>/<%=token%>" type="text" class="btn btn-secondary">relatórios</a>
+        <a href="/cadastrarwebhook/<%=idempresa%>/<%=token%>" type="text" class="btn btn-primary">webhook</a>
       </div>
       <% testes.forEach(teste =>{%> <% if( teste.idempresa == idempresa &&
       teste.status == 0 ){%>
-      <form id="form-deletarpasso" method="POST" action="/deletarteste">
+      <form id="form-deletarpasso" method="POST" action="/deletarteste/<%=idempresa%>/<%=token%>">
         <input type="hidden" name="nometeste" value="<%=teste.nometeste%>" />
         <input type="hidden" name="idempresa" value="<%=teste.idempresa%>" />
         <div class="card-body">
           <div class="row mt-6">
             <div class="col">
-              <a class="teste-nome" href="/atualizarnometeste/<%=teste.nometeste%>/<%=idempresa%>"><%=teste.nometeste%> </a>
+              <a class="teste-nome" href="/atualizarnometeste/<%=teste.nometeste%>/<%=idempresa%>/<%=token%>"><%=teste.nometeste%> </a>
             </div>
 
             <div class="col">
               <a
                 class="btn btn-secondary"
-                href="/editarteste/<%=teste.nometeste%>/<%=idempresa%>"
+                href="/editarteste/<%=teste.nometeste%>/<%=idempresa%>/<%=token%>"
                 >editar</a
               >
               <button
@@ -48,7 +48,7 @@
               <a
                 class="btn btn-warning"
                 id="rodateste"
-                href="/run-tests/<%=idempresa%>/<%=teste.nometeste%>"
+                href="/run-tests/<%=idempresa%>/<%=teste.nometeste%>/<%=token%>"
                 >executar</a
               >
             </div>

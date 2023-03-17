@@ -1,16 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const fs = require("fs");
-const Nometeste = require("../../database/Nometeste");
-const Cadastrar = require("../../database/Cadastrar");
-const Agendamento = require("../../database/Agendamento");
-const adminAuto = require("../../middleware/autorizar");
-const moment = require('moment');
-
+const adminAuto = require("../../middware/autorizar") 
 router.post(
   "/salvaragendamento/:idempresa/",
-  adminAuto,
+
   (req, res) => {
     var idagendamento = req.params.idagendamento;
     var idempresa = req.params.idempresa;
@@ -32,18 +25,15 @@ router.post(
     var nomeagendamento = req.body.nomeagendamento;
     var tempo = req.body.tempo;
     res.render("agenda", { idempresa });
-
   }
 );
 
-router.get("/agenda/:idempresa", adminAuto, (req, res) => {
-  const idempresa = req.params.idempresa
-  
-    res.render("agenda", { idempresa });
- 
+router.get("/agenda/:idempresa/:token", adminAuto , (req, res) => {
+  const idempresa = req.params.idempresa;
+  var token = req.params.token;
+
+  res.render("agenda", { idempresa,token });
 });
-
-
 
 // Define a rota para /agendamento
 router.post("/agendamento", (req, res) => {

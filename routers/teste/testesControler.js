@@ -4,15 +4,22 @@ const Nometeste = require("../../database/Nometeste");
 const NomeGrupo = require("../../database/Nometeste");
 const Passo = require("../../database/Passoteste");
 const VideoTeste = require("../../database/VideoTeste");
-const adminAuto = require("../../middleware/autorizar");
+const adminAuto = require("../../middware/autorizar");
 
-router.get("/atualizarnometeste/:nometeste/:idempresa",adminAuto, (req, res) => {
-  var nometeste = req.params.nometeste;
-  var idempresa = req.params.idempresa;
-  res.render("editarnometeste", { nometeste, idempresa });
-});
+router.get(
+  "/atualizarnometeste/:nometeste/:idempresa/:token",
+  adminAuto,
+  (req, res) => {
+    var nometeste = req.params.nometeste;
+    var idempresa = req.params.idempresa;
+    var token = req.params.token;
+    res.render("editarnometeste", { nometeste, idempresa, token });
+  }
+);
 
-router.post("/salvarnovonometeste/:nometeste", (req, res) => {
+router.post("/salvarnovonometeste/:nometeste/:idempresa/:token",
+adminAuto, (req, res) => {
+  var token = req.params.token;
   var novonometeste = req.body.novonometeste;
   var idempresa = req.body.idempresa;
   var nometeste = req.params.nometeste;
@@ -25,7 +32,9 @@ router.post("/salvarnovonometeste/:nometeste", (req, res) => {
     .then((registro) => {
       if (registro) {
         res.render("editarnometesteexiste", {
-         idempresa, nometeste
+          idempresa,
+          nometeste,
+          token
         });
       } else {
         Nometeste.update(
@@ -57,7 +66,7 @@ router.post("/salvarnovonometeste/:nometeste", (req, res) => {
               nometeste: nometeste,
             },
           }
-        )
+        );
         VideoTeste.update(
           {
             nometeste: novonometeste,
@@ -67,11 +76,13 @@ router.post("/salvarnovonometeste/:nometeste", (req, res) => {
               nometeste: nometeste,
             },
           }
-        ).then(() => {
+        )
+          .then(() => {
             Nometeste.findAll().then((testes) => {
               res.render("painel", {
                 idempresa,
                 testes,
+                token
               });
             });
           })
@@ -85,28 +96,37 @@ router.post("/salvarnovonometeste/:nometeste", (req, res) => {
     });
 });
 //Criar caso de teste
-router.get("/criarteste/:nometeste/:idempresa", adminAuto, (req, res) => {
-  var nometeste = req.params.nometeste;
-  var idempresa = req.params.idempresa;
+router.get(
+  "/criarteste/:nometeste/:idempresa/:token",
+  adminAuto,
+  (req, res) => {
+    var nometeste = req.params.nometeste;
+    var idempresa = req.params.idempresa;
+    var token = req.params.token;
 
-  Passo.findAll().then((testes) => {
-    res.render("criarteste", {
-      nometeste: nometeste,
-      idempresa: idempresa,
-      testes: testes,
+    Passo.findAll().then((testes) => {
+      res.render("criarteste", {
+        nometeste: nometeste,
+        idempresa: idempresa,
+        testes: testes,
+        token,
+      });
     });
-  });
-});
+  }
+);
 
 //salvar nome teste
-router.get("/gravarnometeste/:idempresa", adminAuto, (req, res) => {
+router.get("/gravarnometeste/:idempresa/:token", adminAuto, (req, res) => {
+  var token = req.params.token;
   var idempresa = req.params.idempresa;
   res.render("nometeste", {
     idempresa: idempresa,
+    token,
   });
 });
 
-router.post("/nometeste/", (req, res) => {
+router.post("/nometeste/:idempresa/:token", adminAuto, (req, res) => {
+  var token = req.params.token;
   var nometeste = req.body.nometeste;
   var idempresa = req.body.idempresa;
   Nometeste.findOne({
@@ -116,6 +136,7 @@ router.post("/nometeste/", (req, res) => {
       if (registro) {
         res.render("nometesteexiste", {
           idempresa: idempresa,
+          token,
         });
       } else {
         Nometeste.create({
@@ -125,7 +146,9 @@ router.post("/nometeste/", (req, res) => {
           executar: "nao",
         })
           .then(() => {
-            res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+            res.redirect(
+              "/criarteste/" + nometeste + "/" + idempresa + "/" + token
+            );
             console.log("Nome salvo com sucesso");
           })
           .catch((erro) => {
@@ -139,18 +162,23 @@ router.post("/nometeste/", (req, res) => {
 });
 
 //editar teste
-router.get("/editarteste/:nometeste/:idempresa", adminAuto, (req, res) => {
-  var idempresa = req.params.idempresa;
-  var nometeste = req.params.nometeste;
-  res.redirect("/criarteste/" + nometeste + "/" + idempresa);
-  console.log("Passo salvo com sucesso!");
-});
+router.get(
+  "/editarteste/:nometeste/:idempresa/:token",
+  adminAuto,
+  (req, res) => {
+    var idempresa = req.params.idempresa;
+    var nometeste = req.params.nometeste;
+    var token = req.params.token;
+    res.redirect("/criarteste/" + nometeste + "/" + idempresa + "/" + token);
+    console.log("Passo salvo com sucesso!");
+  }
+);
 
 //deletar teste
-router.post("/deletarteste/", (req, res) => {
+router.post("/deletarteste/:idempresa/:token", adminAuto, (req, res) => {
   var nometeste = req.body.nometeste;
   var idempresa = req.body.idempresa;
-  console.log("ID: " + idempresa);
+  var token = req.params.token;
 
   Passo.findOne({
     where: { idempresa: idempresa, nometeste: nometeste },
@@ -163,7 +191,7 @@ router.post("/deletarteste/", (req, res) => {
           console.log("Passo excluido com sucesso!");
         })
         .catch((erro) => {
-          res.redirect("/adicionarpasso");
+          res.redirect("/adicionarpasso/" + idempresa + "/" + token);
           console.log("Erro ao excluir passo" + erro);
         });
     }
@@ -179,26 +207,18 @@ router.post("/deletarteste/", (req, res) => {
         })
           .then(() => {
             console.log("Teste excluído com sucesso!");
-            res.redirect("/painelatualizar/" + idempresa);
+            res.redirect("/painelatualizar/" + idempresa + "/" + token);
           })
           .catch((err) => {
             console.error("Erro ao excluir registro:", err);
           });
       } else {
-        console.log(
-          "Teste não encontrado: ID EMPRESA: " +
-            idempresa +
-            " NOME TESTE: " +
-            nometeste +
-            "STATUS: " +
-            status
-        );
-        res.redirect("/painelatualizar/" + idempresa);
+        res.redirect("/painelatualizar/" + idempresa + "/" + token);
       }
     })
     .catch((err) => {
       console.error("Erro ao buscar registro:", err);
-      res.redirect("/painelatualizar/" + idempresa);
+      res.redirect("/painelatualizar/" + idempresa + "/" + token);
     });
 });
 

@@ -3,13 +3,12 @@ const router = express.Router();
 const Passo = require("../../database/Passoteste");
 const Grupo = require("../../database/GrupoTeste");
 const Biblioteca = require("../../database/Biblioteca");
-const adminAuto = require("../../middleware/autorizar");
+const adminAuto = require("../../middware/autorizar") 
 
 ///editar passo em lista de passo
 router.get(
-  "/editardadospasso/:id/:nometeste/:idempresa",
-  adminAuto,
-  (req, res) => {
+  "/editardadospasso/:id/:nometeste/:idempresa/:token", adminAuto , (req, res) => {
+    var token = req.params.token;
     const idempresa = req.params.idempresa;
     const id = req.params.id;
     const nometeste = req.params.nometeste;
@@ -23,6 +22,7 @@ router.get(
             testes: testes,
             nometeste: nometeste,
             idempresa,
+            token
           });
         }
       })
@@ -34,7 +34,8 @@ router.get(
 );
 
 // artualizar dados
-router.post("/atualizarpassodados/", (req, res) => {
+router.post("/atualizarpassodados/:idempresa/:token", adminAuto , (req, res) => {
+  var token = req.params.token;
   var idempresa = req.body.idempresa;
   var nometeste = req.body.nometeste;
   var titulo = req.body.titulo;
@@ -111,6 +112,7 @@ router.post("/atualizarpassodados/", (req, res) => {
               dados,
               nometeste: nometeste,
               idempresa: idempresa,
+              token
             });
           })
           .catch((err) => {
@@ -128,9 +130,10 @@ router.post("/atualizarpassodados/", (req, res) => {
 
 ///deletar passo em lista de passo
 router.get(
-  "/deletadadospasso/:id/:nometeste/:idempresa",
-  adminAuto,
+  "/deletadadospasso/:id/:nometeste/:idempresa/:token", adminAuto ,
+
   (req, res) => {
+    var token = req.params.token; 
     const id = req.params.id;
     const nometeste = req.params.nometeste;
     const idempresa = req.params.idempresa;
@@ -152,6 +155,7 @@ router.get(
                 dados,
                 nometeste: nometeste,
                 idempresa: idempresa,
+                token
               });
             })
             .catch((erro) => {
@@ -166,12 +170,13 @@ router.get(
 
 //adicionar passo no teste
 router.get(
-  "/adicionardados/:id/:nometeste/:idempresa",
-  adminAuto,
+  "/adicionardados/:id/:nometeste/:idempresa/:token", adminAuto ,
+
   (req, res) => {
     const id = req.params.id;
     const nometeste = req.params.nometeste;
     const idempresa = req.params.idempresa;
+    var token = req.params.token;
 
     Biblioteca.findAll({ where: { id: id } }).then((dados) => {
       dados.forEach((item) => {
@@ -188,7 +193,7 @@ router.get(
           esperar: item.esperar,
         })
           .then(() => {
-            res.redirect("/criarteste/" + nometeste + "/" + idempresa);
+            res.redirect("/criarteste/" + nometeste + "/" + idempresa+"/"+token);
           })
           .catch((erro) => {
             console.log("Erro ao cadastrar passo" + erro);
@@ -199,10 +204,10 @@ router.get(
 );
 
 //buscar passos
-router.get("/meusdados/:nometeste/:idempresa", adminAuto, (req, res) => {
+router.get("/meusdados/:nometeste/:idempresa/:token", adminAuto , (req, res) => {
   const idempresa = req.params.idempresa;
   const nometeste = req.params.nometeste;
-
+  var token = req.params.token;
   Biblioteca.findAll({
     where: {
       idempresa: idempresa,
@@ -213,6 +218,7 @@ router.get("/meusdados/:nometeste/:idempresa", adminAuto, (req, res) => {
         dados,
         nometeste: nometeste,
         idempresa: idempresa,
+        token
       });
     })
     .catch((err) => {

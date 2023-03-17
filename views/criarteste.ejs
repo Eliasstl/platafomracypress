@@ -7,28 +7,28 @@
         <hr />
         <h2><%=nometeste%></h2>
         <hr />
-        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>/<%=token%>"
           >voltar</a
         >
 
         <a
           class="btn btn-primary"
-          href="/adicionarpasso/<%=nometeste%>/<%=idempresa%>"
+          href="/adicionarpasso/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >criar passo</a
         >
         <a
           class="btn btn-secondary"
-          href="/meusdados/<%=nometeste%>/<%=idempresa%>"
+          href="/meusdados/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >meus passos</a
         >
         <a
           class="btn btn-primary"
-          href="/criargrupo/<%=nometeste%>/<%=idempresa%>"
+          href="/criargrupo/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >criar grupo de passos</a
         >
         <a
           class="btn btn-secondary"
-          href="/meusgrupos/<%=nometeste%>/<%=idempresa%>"
+          href="/meusgrupos/<%=nometeste%>/<%=idempresa%>/<%=token%>"
           >meus grupos</a
         >
       </div>
@@ -40,7 +40,7 @@
           <form
             id="form-deletarpasso"
             method="POST"
-            action="/deletarpasso"
+            action="/deletarpasso/<%=idempresa%>/<%=token%>"
             style="border: 1px solid #ddd; padding: 10px"
           >
             <input type="hidden" name="idpasso" value="<%= teste.id %>" />
@@ -64,14 +64,14 @@
               <div class="col">
                 <div class="btn-group-vertical mt-3 mb-0" role="group">
                   <a
-                    href="/moverpassosub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    href="/moverpassosub/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>/<%=token%>"
                     class="btn btn-outline-secondary btn-sm btn-green"
                     id="btn-moverpassocima"
                   >
                     <i class="bi bi-caret-up"></i>
                   </a>
                   <a
-                    href="/moverpassodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>"
+                    href="/moverpassodes/<%=teste.id%>/<%=teste.idempresa%>/<%=teste.nometeste%>/<%=token%>"
                     class="btn btn-outline-secondary btn-sm"
                     id="btn-moverpassobaixo"
                   >
@@ -82,7 +82,7 @@
                 <div class="btn-group" role="group">
                   <a
                     class="btn btn-secondary btn-sm"
-                    href="/aditarp/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>"
+                    href="/aditarp/<%= nometeste %>/<%= idempresa %>/<%= teste.id %>/<%=token%>"
                   >
                     editar passo
                   </a>

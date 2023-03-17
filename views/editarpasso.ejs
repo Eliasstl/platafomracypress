@@ -4,7 +4,7 @@
 <br />
 <hr />
 <div class="container">
-  <form id="form-salvar" method="POST" action="/atualizarpassodados/">
+  <form id="form-salvar" method="POST" action="/atualizarpassodados/<%=idempresa%>/<%=token%>">
     <% if (testes && testes.length) { %>
       <% testes.forEach(function(teste) { %>
         <input type="hidden" name="idpasso" value="<%=teste.id%>" />
@@ -78,7 +78,7 @@
             </select>
           </div>
           <button id="btn-salvar" type="submit" class="btn btn-primary">salvar passo</button>
-          <a type="reset" class="btn btn-secondary"   href="/meusdados/<%=nometeste%>/<%=teste.idempresa%>">cancelar</a>
+          <a type="reset" class="btn btn-secondary"   href="/meusdados/<%=nometeste%>/<%=teste.idempresa%>/<%=token%>">cancelar</a>
         </div>
       <% }); %>
     <% }%>

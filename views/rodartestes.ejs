@@ -7,7 +7,7 @@
       <div class="card-header">
         <hr />
         <h1>Selecione os testes de software que deseja realizar</h1>
-        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>"
+        <a type="reset" class="btn btn-secondary" href="/painel/<%=idempresa%>/<%=token%>"
           >voltar</a
         >
         <hr />
@@ -16,20 +16,21 @@
         <form
           id="form-rodartestese"
           method="POST"
-          action="/rodartestesselecionados/<%=idempresa%>"
+          action="/rodartestesselecionados/<%=idempresa%>/<%=token%>"
         >
           <div class="d-flex justify-content-between align-items-center mb-2">
             <button type="button" class="btn btn-primary" id="select-all-btn">
               selecionar tudo
             </button>
+            <button type="submit" class="btn btn-primary" id="btn-rodartestesselecionados" disabled>rodar testes selecionados</button>
 
-            <!--   <button type="submit" class="btn btn-primary" id="btn-rodartestesselecionados" disabled>rodar testes selecionados</button> -->
-            <a
-              href="/planoplus/<%=idempresa%>"
+            <!--  <a
+              href="/planoplus/<%=idempresa%>/<%=token%>"
               class="btn btn-primary"
               id="btn-rodartestesselecionados"
               >rodar testes selecionados</a
-            >
+            >  -->
+            
           </div>
           <% testes.forEach(teste => { %> <% if (teste.idempresa == idempresa &&
           teste.status == 0) { %>

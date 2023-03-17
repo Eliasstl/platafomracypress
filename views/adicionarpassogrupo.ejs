@@ -4,7 +4,7 @@
   <br />
   <hr />
   <div class="container">
-    <form method="POST" action="/salvarpassogrupo/">
+    <form method="POST" action="/salvarpassogrupo/<%=idempresa%>/<%=token%>">
       <div class="form-group">
         <label for="stepName">Nome do Passo de Teste:</label>
         <input type="text" class="form-control" name="titulo" />
@@ -73,7 +73,7 @@
       <a
         type="reset"
         class="btn btn-secondary"
-        href="/criargrupo/<%=nometeste%>/<%=idempresa%>"
+        href="/criargrupo/<%=nometeste%>/<%=idempresa%>/<%=token%>"
         >cancelar</a
       >
     </form>

@@ -8,7 +8,7 @@
         <% results.forEach(function(result) { %>
 
         <!-- Adicione aqui outros campos que você deseja exibir -->
-        <a class="btn btn-secondary mt-3" href="/painel/<%=idempresa%>">voltar</a>
+        <a class="btn btn-secondary" href="/painel/<%=idempresa%>/<%=token%>">voltar</a>
         <% }) %>
         <hr />
         <h1>Relatório <%=nTes%></h1>
@@ -24,7 +24,7 @@
         >
         <a
         class="btn btn-secondary"
-        href="/editarteste/<%=nTes%>/<%=idempresa%>"
+        href="/editarteste/<%=nTes%>/<%=idempresa%>/<%=token%>"
         >editar</a
       >
         <% } else if (results[0].totalPassed === 0) { %>
@@ -33,7 +33,7 @@
           >ver vídeo</a
         > <a
         class="btn btn-secondary"
-        href="/editarteste/<%=nTes%>/<%=idempresa%>"
+        href="/editarteste/<%=nTes%>/<%=idempresa%>/<%=token%>"
         >editar</a
       >
         <% } %> <% } %>

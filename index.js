@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const axios = require("axios");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
@@ -13,9 +12,9 @@ const bibliotecaControle = require("./routers/biblioteca/bibliotecaControle");
 const grupoPassoControle = require("./routers/biblioteca/grupoPassoControle");
 const videoTesteControle = require("./routers/rodarteste/videoTesteControle");
 const agendamentoControle = require("./routers/agendamento/agendamentoControle");
-const webhookDiscordControle= require("./routers/webhook/webhookDiscordControle")
-const webhookWorkplaceControle= require("./routers/webhook/webhookWorkplaceControle")
-const Agendamento = require("./database/Agendamento");
+const webhookDiscordControle = require("./routers/webhook/webhookDiscordControle");
+const webhookWorkplaceControle = require("./routers/webhook/webhookWorkplaceControle");
+
 
 const port = process.env.PORT || 3000;
 //database
@@ -53,13 +52,10 @@ app.use("/", bibliotecaControle);
 app.use("/", grupoPassoControle);
 app.use("/", videoTesteControle);
 app.use("/", agendamentoControle);
-app.use("/",webhookDiscordControle);
-app.use("/",webhookWorkplaceControle)
+app.use("/", webhookDiscordControle);
+app.use("/", webhookWorkplaceControle);
 
-
-setInterval(async () => {
- 
-}, 60000); // Executa a cada minuto
+setInterval(async () => {}, 60000); // Executa a cada minuto
 
 // Criando uma string no formato "hh:mm" com a hora final
 

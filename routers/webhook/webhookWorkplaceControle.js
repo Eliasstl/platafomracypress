@@ -1,24 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const fs = require("fs");
-const Nometeste = require("../../database/Nometeste");
-const WebhookDiscord = require("../../database/WebhookDiscord");
 const WebhookWorkplace = require("../../database/WebhookWorkplace");
-const VideoTeste = require("../../database/VideoTeste");
-const FormData = require("form-data");
 const axios = require("axios");
-const adminAuto = require("../../middleware/autorizar");
-
+const adminAuto = require("../../middware/autorizar") 
 //// workplace
 router.get(
-  "/webhookworkplaceenviar/:idempresa/:nometeste/:resultado/:nomevideo",
+  "/webhookworkplaceenviar/:idempresa/:nometeste/:resultado/:nomevideo/:token", adminAuto ,
   (req, res) => {
-    const videoFileName = req.params.nomevideo;
-    const nometeste = req.params.nometeste;
+    var token = req.params.token;
+    const videourl = req.params.nomevideo;
+    const videoFileName = decodeURIComponent(videourl);
+    const nometesteUrl = req.params.nometeste;
+    const nometeste= decodeURIComponent(nometesteUrl);
     const resultado = req.params.resultado;
     const idempresa = req.params.idempresa;
-const msg ="nometeste"+ "resultdado: "+resultado+ "\n" +"http://node131305-qapro.jelastic.saveincloud.net:14264/"+videoFileName
+    const encodedVideoFileName = videoFileName.replace(/ /g, "%20");
+    const url =
+      "http://node131305-qapro.jelastic.saveincloud.net:14264/videos/" +
+      encodedVideoFileName;
+    const msg =
+      "Nome do Teste: " +
+      nometeste +
+      "\n" +
+      " status: " +
+      resultado +
+      "\n" +
+      url;
+
     WebhookWorkplace.findOne({
       where: {
         idempresa: idempresa,
@@ -30,8 +38,7 @@ const msg ="nometeste"+ "resultdado: "+resultado+ "\n" +"http://node131305-qapro
             constructor() {
               this.url = "https://graph.workplace.com/me/messages";
               this.headers = {
-                Authorization:
-                  `Bearer ${webhook.token}`,
+                Authorization: `Bearer ${webhook.token}`,
               };
             }
 
@@ -50,8 +57,8 @@ const msg ="nometeste"+ "resultdado: "+resultado+ "\n" +"http://node131305-qapro
           }
           const workplace = new Workplace();
           workplace.send(msg);
-          console.log("Webhook wokplaxe enviado")
-          res.redirect(`/relatoriogeral/${idempresa}`)
+          console.log("Webhook wokplaxe enviado");
+          res.redirect(`/relatoriogeral/${idempresa}/${token}`);
         }
       })
       .catch((err) => {
@@ -60,23 +67,25 @@ const msg ="nometeste"+ "resultdado: "+resultado+ "\n" +"http://node131305-qapro
   }
 );
 
-router.get("/webhookworkplace/:idempresa", (req, res) => {
+router.get("/webhookworkplace/:idempresa/:token", adminAuto ,  (req, res) => {
   const idempresa = req.params.idempresa;
-  res.render("webhookWorkplace", { idempresa });
+  var token = req.params.token;
+  res.render("webhookWorkplace", { idempresa,token });
 });
 
 // Deleta a coluna caso tenha sido encontrada
-router.post("/deletarwebhookworkplace/:idempresa/", adminAuto, (req, res) => {
+router.post("/deletarwebhookworkplace/:idempresa/:token", adminAuto ,  (req, res) => {
   const idempresa = req.params.idempresa;
+  var token = req.params.token;
   // Realiza a busca na tabela "webhook"
   WebhookWorkplace.findOne({ where: { idempresa: idempresa } })
     .then((webhook) => {
       if (webhook) {
         // Deleta a coluna caso tenha sido encontrada
         webhook.destroy();
-        res.render("webhookWorkplacedelete", { idempresa });
+        res.render("webhookWorkplacedelete", { idempresa,token });
       } else {
-        res.render("webhookworkplacenao", { idempresa });
+        res.render("webhookworkplacenao", { idempresa,token });
       }
     })
     .catch((err) => {
@@ -84,35 +93,35 @@ router.post("/deletarwebhookworkplace/:idempresa/", adminAuto, (req, res) => {
     });
 });
 
-router.post("/salvarwebhookworkplace/:idempresa", (req, res) => {
+router.post("/salvarwebhookworkplace/:idempresa/:token", adminAuto ,  (req, res) => {
+  var token = req.params.token;
   const idempresa = req.params.idempresa;
-  const token = req.body.token;
+  const toke = req.body.token;
   const idgrupo = req.body.idgrupo;
+  
   WebhookWorkplace.findOne({
     where: {
-     idempresa:idempresa,
+      idempresa: idempresa,
     },
   })
     .then((webhook) => {
-      
       if (webhook) {
-        res.render("webhookWorkplace", { idempresa });
+        res.render("webhookWorkplace", { idempresa,token });
       } else {
         // Não existe um webhook do tipo "discord"
         // Crie um novo registro na tabela "webhooks"
         WebhookWorkplace.create({
           idempresa: idempresa,
-          idgrupo:idgrupo,
-          token:token
+          idgrupo: idgrupo,
+          token: toke,
         })
           .then(() => {
-            res.render("webhookWorkplace", { idempresa });
+            res.render("webhookWorkplace", { idempresa,token });
           })
           .catch((err) => {
-           console.log(err)
+            console.log(err);
           });
       }
-      
     })
     .catch((err) => {
       // Ocorreu um erro ao pesquisar na tabela "webhooks"

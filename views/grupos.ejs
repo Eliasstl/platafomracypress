@@ -9,7 +9,7 @@
     <a
       type="reset"
       class="btn btn-secondary"
-      href="/criargrupo/<%= nometeste %>/<%= idempresa %>"
+      href="/criargrupo/<%= nometeste %>/<%= idempresa %>/<%=token%>"
       >voltar</a
     >
     <hr>
@@ -30,7 +30,7 @@
               <a
                 class="btn btn-primary btn-sm mr-2"
                 name="passo"
-                href="/adicionardadosgrupo/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>"
+                href="/adicionardadosgrupo/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>/<%=token%>"
                 value="<%= dado.id %>"
                 >selecionar</a
               >
@@ -38,14 +38,14 @@
               <a
               class="btn btn-danger btn-sm"
               name="delete"
-              href="/deletadadospasso/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>"
+              href="/deletadadospasso/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>/<%=token%>"
             >
               deletar
             </a>
               <a
                 class="btn btn-secondary btn-sm"
                 name="editar"
-                href="/editardadosgrupo/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>"
+                href="/editardadosgrupo/<%=dado.id%>/<%= nometeste %>/<%= dado.idempresa %>/<%=token%>"
                 value="<%= dado.id %>"
               >
                 editar

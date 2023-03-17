@@ -9,7 +9,7 @@
     <a
       type="reset"
       class="btn btn-secondary"
-      href="/criarteste/<%= nometeste %>/<%= idempresa %>"
+      href="/criarteste/<%= nometeste %>/<%= idempresa %>/<%=token%>"
       >voltar</a
     >
     <hr>
@@ -34,7 +34,7 @@
                   <a
                     class="btn btn-primary btn-sm mr-2"
                     name="gru"
-                    href="/selecionargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>"
+                    href="/selecionargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>/<%=token%>"
                     value="<%=grupo.id%>"
                     >selecionar</a
                   >
@@ -42,7 +42,7 @@
                   <a
                     class="btn btn-danger btn-sm"
                     name="delete"
-                    href="/deletargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>"
+                    href="/deletargrupo/<%=grupo.titulo%>/<%= nometeste %>/<%= idempresa %>/<%=token%>"
                   >
                     deletar
                   </a>

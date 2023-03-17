@@ -9,7 +9,7 @@
       </div>
       <div class="card-body">
         
-        <form id="form-teste" method="POST" action="/nometeste">
+        <form id="form-teste" method="POST" action="/nometeste/<%=idempresa%>/<%=token%>">
           <input type="hidden" value="<%=idempresa%>" name="idempresa" />
           <div class="form-group">
             <input
@@ -26,7 +26,7 @@
           <a
             type="reset"
             class="btn btn-secondary"
-            href="/painel/<%=idempresa%>"
+            href="/painel/<%=idempresa%>/<%=token%>"
             >cancelar</a
           >
         </form>

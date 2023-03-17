@@ -12,7 +12,7 @@
           <h4 class="alert-heading">Aviso</h4>
           <p>Nome do teste existe em nosso banco, digite outro nome.</p>
         </div>
-        <form id="form-teste" method="POST" action="/nometeste">
+        <form id="form-teste" method="POST" action="/nometeste/<%=idempresa%>/<%=token%>">
           <input type="hidden" value="<%=idempresa%>" name="idempresa" />
           <div class="form-group">
             <input
@@ -29,7 +29,7 @@
           <a
             type="reset"
             class="btn btn-secondary"
-            href="/painel/<%=idempresa%>"
+            href="/painel/<%=idempresa%>/<%=token%>"
             >cancelar</a
           >
         </form>

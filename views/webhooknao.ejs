@@ -6,7 +6,7 @@
       <form
         id="deletarwebhook"
         method="POST"
-        action="/deletarwebhook/<%=idempresa%>"
+        action="/deletarwebhook/<%=idempresa%>/<%=token%>"
         style="border: 1px solid #ddd; padding: 10px"
       >
       <div class="form-group">
@@ -15,11 +15,11 @@
         <a
           type="reset"
           class="btn btn-secondary"
-          href="/painel/<%=idempresa%>"
+          href="/painel/<%=idempresa%>/<%=token%>"
           >voltar</a
         >
-        <a href="/cadastrarwebhook/<%=idempresa%>" type="text" class="btn btn-primary">discord</a>
-        <a href="/webhookworkplace/<%=idempresa%>" class="btn btn-primary">workplace</a>
+        <a href="/cadastrarwebhook/<%=idempresa%>/<%=token%>" type="text" class="btn btn-primary">discord</a>
+        <a href="/webhookworkplace/<%=idempresa%>/<%=token%>" class="btn btn-primary">workplace</a>
     
       </div>
     
@@ -39,7 +39,7 @@
       <form
         id="form-salvarwebhook"
         method="POST"
-        action="/salvarwebhook/<%=idempresa%>"
+        action="/salvarwebhook/<%=idempresa%>/<%=token%>"
         style="border: 1px solid #ddd; padding: 10px"
       >
        

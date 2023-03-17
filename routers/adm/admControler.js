@@ -2,20 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Nometeste = require("../../database/Nometeste");
 const Cadastrar = require("../../database/Cadastrar");
-const Token = require("../../database/Token");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const adminAuto = require("../../middleware/autorizar");
-const session = require("express-session");
+const adminAuto = require("../../middware/autorizar");
 
-
-
-///
-router.get("/planoplus/:idempresa", adminAuto, (req, res) => {
+router.get("/planoplus/:idempresa/:token", adminAuto, (req, res) => {
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
   Nometeste.findAll().then((testes) => {
     res.render("planoplus", {
       idempresa,
       testes,
+      token,
     });
   });
 });
@@ -24,42 +22,8 @@ router.get("/planoplus/:idempresa", adminAuto, (req, res) => {
 router.get("/", (req, res) => {
   res.render("acessar");
 });
-router.get("/sair/:idempresa", adminAuto, (req, res) => {
-  var idempresa = req.params.idempresa;
-
-  // Verifica se idempresa é um número inteiro
-  if (isNaN(parseInt(idempresa))) {
-    res.redirect("/");
-  } else {
-    // Verifica se idempresa está na tabela
-    Token.findOne({
-      where: {
-        idempresa: idempresa,
-      },
-    })
-      .then((token) => {
-        if (token) {
-          // Deleta o token e redireciona para a página principal
-          Token.destroy({
-            where: {
-              idempresa: idempresa,
-            },
-          })
-            .then(() => {
-              console.log("saiu: " + session.user);
-              res.redirect("/");
-            })
-            .catch((err) => {
-              res.redirect("/");
-            });
-        } else {
-          res.redirect("/");
-        }
-      })
-      .catch((err) => {
-        res.redirect("/");
-      });
-  }
+router.get("/sair/:idempresa", (req, res) => {
+  res.render("acessar");
 });
 
 //cadastrar cliente
@@ -99,31 +63,37 @@ router.post("/salvarcadastro", (req, res) => {
     }
   });
 });
-//painel adm 
-router.get("/painel/:idempresa", adminAuto, (req, res) => {
+//painel adm
+router.get("/painel/:idempresa/:token", adminAuto, (req, res) => {
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
   Nometeste.findAll().then((testes) => {
     res.render("painel", {
       idempresa,
       testes,
+      token,
     });
   });
 });
-router.get("/rodartestes/:idempresa", adminAuto, (req, res) => {
+router.get("/rodartestes/:idempresa/:token", adminAuto, (req, res) => {
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
   Nometeste.findAll().then((testes) => {
     res.render("rodartestes", {
       idempresa,
       testes,
+      token,
     });
   });
 });
-router.get("/painelatualizar/:idempresa", adminAuto, (req, res) => {
+router.get("/painelatualizar/:idempresa/:token", adminAuto, (req, res) => {
   var idempresa = req.params.idempresa;
+  var token = req.params.token;
   Nometeste.findAll().then((testes) => {
     res.render("painel", {
       idempresa,
       testes,
+      token,
     });
   });
 });
@@ -142,29 +112,21 @@ router.post("/validaracesso", (req, res) => {
             req.session.user = {
               id: registro.id,
             };
-            console.log("VALOR: " + registro.id);
+            var hash = "QAPRO";
 
             // Senha correta, renderiza o painel
+            const token = jwt.sign({ userId: registro.id }, hash, {
+              expiresIn: 28800,
+            });
+
+            res.cookie("token", token, { httpOnly: true });
+            console.log("TOKEN DE ACESSO: " + token);
             const idempresa = registro.id;
             Nometeste.findAll().then((testes) => {
               res.render("painel", {
                 idempresa,
                 testes,
-              });
-
-              let salt = bcrypt.genSaltSync(10);
-              let token = bcrypt.hashSync(idempresa.toString(), salt);
-
-              // deleta todos os tokens com o mesmo idempresa
-              Token.destroy({
-                where: {
-                  idempresa: idempresa,
-                },
-              });
-              // cadastra o novo token
-              Token.create({
-                idempresa: idempresa,
-                token: token,
+                token,
               });
             });
           } else {

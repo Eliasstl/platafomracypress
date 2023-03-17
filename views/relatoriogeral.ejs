@@ -5,7 +5,7 @@
     <div class="card mt-3">
       <div class="card-header">
         <h1>Relatórios</h1>
-        <a class="btn btn-secondary" href="/painel/<%=idempresa%>">voltar</a>
+        <a class="btn btn-secondary" href="/painel/<%=idempresa%>/<%=token%>">voltar</a>
       </div>
       <% videos.forEach(function(video) { %>
       <div class="card-body">
@@ -28,12 +28,12 @@
           >
           <a
             class="btn btn-secondary"
-            href="/editarteste/<%=video.nometeste%>/<%=idempresa%>"
+            href="/editarteste/<%=video.nometeste%>/<%=idempresa%>/<%=token%>"
             >editar</a
           >
           <a
             class="btn btn-danger"
-            href="/deletarrelatorio/<%=video.video%>/<%=idempresa%>"
+            href="/deletarrelatorio/<%=video.video%>/<%=idempresa%>/<%=token%>"
             >deletar relatório</a
           >
         </div>

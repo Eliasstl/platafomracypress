@@ -8,11 +8,13 @@ const Nometeste = require("../../database/Nometeste");
 const VideoTeste = require("../../database/VideoTeste");
 const path = require("path");
 const fs = require("fs");
-const adminAuto = require("../../middleware/autorizar");
+const adminAuto = require("../../middware/autorizar") 
+  
 router.post(
-  "/rodartestesselecionados/:idempresa",
-  adminAuto,
+  "/rodartestesselecionados/:idempresa/:token",adminAuto ,
+      
   async (req, res) => {
+    var token = req.params.token;
     const idempresa = req.params.idempresa;
     const selecionados = req.body["selecionado[]"];
 
@@ -21,7 +23,7 @@ router.post(
     if (Array.isArray(selecionados)) {
       try {
         for (const selecionado of selecionados) {
-          const url = `http://localhost:3000/run-tests/${idempresa}/${selecionado}`;
+          const url = `http://localhost:3000/run-tests/${idempresa}/${selecionado}/${token}`;
           // Fazer uma solicitação HTTP para a rota com a URL gerada
           // para executar o teste usando Cypress, e esperar pela resposta
           await axios.get(url);
@@ -33,6 +35,7 @@ router.post(
             res.render("testerodando", {
               idempresa,
               testes,
+              token
             });
           });
         });
@@ -41,7 +44,7 @@ router.post(
         res.status(500).send("Erro ao executar testes.");
       }
     } else {
-      const url = `http://localhost:3000/run-tests/${idempresa}/${selecionados}`;
+      const url = `http://localhost:3000/run-tests/${idempresa}/${selecionados}/${token}`;
       // Fazer uma solicitação HTTP para a rota com a URL gerada
       // para executar o teste usando Cypress, e esperar pela resposta
       try {
@@ -65,7 +68,8 @@ router.post(
 );
 
 //rota da api
-router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
+router.get("/run-tests/:idempresa/:nteste/:token", adminAuto ,    (req, res) => {
+  var token = req.params.token;
   const idem = req.params.idempresa;
   const nteste = req.params.nteste;
   Nometeste.findOne({
@@ -189,6 +193,9 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
                 })
               )
                 .then((results) => {
+                  //deixa o nomevideo apto para navegador
+                  const novoNomeVideo = nomevideo.replace(/ /g, "%20");
+                  const novoNomeTeste = nteste.replace(/ /g, "%20");
                   ///atualizar status nome teste
                   Nometeste.update(
                     { executar: "nao" },
@@ -212,27 +219,7 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
                       resultado: "Aprovado",
                       video: nomevideo,
                     };
-                    axios
-                      .get(
-                        `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Aprovado/${nomevideo}`
-                      )
-                      .then((response) => {
-                        console.log(response.data);
-                      })
-                      .catch((error) => {
-                        console.error(error);
-                      });
-                      axios
-                      .get(
-                        `http://localhost:3000/webhookworkplaceenviar/${idem}/${nteste}/Aprovado/${nomevideo}`
-                      )
-                      .then((response) => {
-                        console.log(response.data);
-                      })
-                      .catch((error) => {
-                        console.error(error);
-                      });
-  
+              
 
                     VideoTeste.create(novoVideoTeste)
                       .then((video) => {
@@ -250,7 +237,7 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
                     };
                     axios
                       .get(
-                        `http://localhost:3000/webhookdiscord/${idem}/${nteste}/Falhou/${nomevideo}`
+                        `http://localhost:3000/webhookdiscord/${idem}/${novoNomeTeste}/Falhou/${novoNomeVideo}/${token}`
                       )
                       .then((response) => {
                         console.log(response.data);
@@ -260,7 +247,7 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
                       });
                     axios
                       .get(
-                        `http://localhost:3000/webhookworkplaceenviar/${idem}/${nteste}/Falhou/${nomevideo}`
+                        `http://localhost:3000/webhookworkplaceenviar/${idem}/${novoNomeTeste}/Falhou/${novoNomeVideo}/${token}`
                       )
                       .then((response) => {
                         console.log(response.data);
@@ -304,6 +291,7 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
                       idempresa: idem,
                       nTes: nteste,
                       nomevideo: nomevideo,
+                      token
                     });
                   } else {
                     console.log(
@@ -329,6 +317,7 @@ router.get("/run-tests/:idempresa/:nteste", adminAuto, (req, res) => {
           res.render("testerodandopainel", {
             idempresa: idem,
             testes,
+            token
           });
         });
       }
